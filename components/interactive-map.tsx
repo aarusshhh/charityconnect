@@ -275,23 +275,23 @@ export function InteractiveMap() {
 
   return (
     <div className="w-full h-full">
-      <div className="mb-6 space-y-4">
-        <div className="flex flex-col sm:flex-row gap-4">
+      <div className="mb-4 sm:mb-6 space-y-3 sm:space-y-4">
+        <div className="flex flex-col gap-3 sm:gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 sm:w-5 sm:h-5" />
             <Input
-              placeholder="Search by organization, emirate, city, or skills..."
+              placeholder="Search organizations, emirates, skills..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 glass-hover"
+              className="pl-9 sm:pl-10 glass-hover text-sm sm:text-base"
             />
           </div>
           <div className="flex items-center gap-2">
-            <Filter className="w-5 h-5 text-muted-foreground" />
+            <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="glass rounded-lg px-3 py-2 text-sm bg-transparent border border-border"
+              className="glass rounded-lg px-2 sm:px-3 py-2 text-xs sm:text-sm bg-transparent border border-border flex-1 sm:flex-none"
             >
               <option value="all">All Types</option>
               {uniqueTypes.map((type) => (
@@ -308,7 +308,7 @@ export function InteractiveMap() {
             <Badge
               key={type}
               variant="outline"
-              className={`cursor-pointer transition-all ${
+              className={`cursor-pointer transition-all text-xs ${
                 filterType === type ? typeColors[type as keyof typeof typeColors] : "glass-hover"
               }`}
               onClick={() => setFilterType(filterType === type ? "all" : type)}
@@ -319,51 +319,55 @@ export function InteractiveMap() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-[600px]">
-        <div className="lg:col-span-3">
-          <div className="glass rounded-2xl p-6 h-full relative overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6 h-[500px] sm:h-[600px]">
+        <div className="lg:col-span-3 order-2 lg:order-1">
+          <div className="glass rounded-2xl p-3 sm:p-6 h-full relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-muted/10 via-transparent to-primary/5 rounded-2xl" />
 
             <div className="relative z-10 h-full">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold">UAE Charity Map</h3>
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <h3 className="text-base sm:text-lg font-semibold">UAE Charity Map</h3>
                 <div className="flex items-center gap-2">
                   <Button
                     size="sm"
                     variant="outline"
-                    className="glass-hover bg-transparent"
+                    className="glass-hover bg-transparent text-xs sm:text-sm px-2 sm:px-3"
                     onClick={getUserLocation}
                     disabled={locationLoading}
                   >
                     {locationLoading ? (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 animate-spin" />
                     ) : (
-                      <Navigation className="w-4 h-4 mr-2" />
+                      <Navigation className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                     )}
-                    My Location
+                    <span className="hidden sm:inline">My Location</span>
+                    <span className="sm:hidden">Location</span>
                   </Button>
                 </div>
               </div>
 
-              <div ref={mapRef} className="h-full rounded-xl overflow-hidden" style={{ minHeight: "400px" }} />
+              <div ref={mapRef} className="h-full rounded-xl overflow-hidden" style={{ minHeight: "300px" }} />
             </div>
           </div>
         </div>
 
-        <div className="lg:col-span-2 space-y-4 max-h-[600px] overflow-y-auto">
+        <div className="lg:col-span-2 order-1 lg:order-2 space-y-3 sm:space-y-4 max-h-[300px] sm:max-h-[600px] overflow-y-auto">
           {filteredOrganizations.map((org) => (
             <div
               key={org.id}
-              className={`glass rounded-xl p-4 cursor-pointer transition-all duration-200 ${
+              className={`glass rounded-xl p-3 sm:p-4 cursor-pointer transition-all duration-200 ${
                 selectedOrg === org.id ? "ring-2 ring-primary scale-[1.02]" : "glass-hover"
               }`}
               onClick={() => handleOrgClick(org)}
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-sm mb-1">{org.name}</h4>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className={`text-xs ${typeColors[org.type as keyof typeof typeColors]}`}>
+              <div className="flex items-start justify-between mb-2 sm:mb-3">
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-sm sm:text-base mb-1 truncate">{org.name}</h4>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-2">
+                    <Badge
+                      variant="outline"
+                      className={`text-xs w-fit ${typeColors[org.type as keyof typeof typeColors]}`}
+                    >
                       {org.type}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
@@ -371,45 +375,46 @@ export function InteractiveMap() {
                     </span>
                   </div>
                 </div>
-                <Badge variant="outline" className={`text-xs ${urgencyColors[org.urgency]}`}>
-                  {org.urgency} priority
+                <Badge variant="outline" className={`text-xs ml-2 ${urgencyColors[org.urgency]}`}>
+                  {org.urgency}
                 </Badge>
               </div>
 
-              <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{org.description}</p>
+              <p className="text-xs text-muted-foreground mb-2 sm:mb-3 leading-relaxed line-clamp-2">
+                {org.description}
+              </p>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center space-x-1">
                     <Users className="w-3 h-3" />
-                    <span>{org.volunteers} volunteers</span>
+                    <span>{org.volunteers}</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Calendar className="w-3 h-3" />
-                    <span>{org.events} events</span>
+                    <span>{org.events}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Heart className="w-3 h-3" />
+                    <span className="truncate max-w-20">{org.impact}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-1 text-xs">
-                  <Heart className="w-3 h-3" />
-                  <span>{org.impact}</span>
-                </div>
-
-                <div className="flex flex-wrap gap-1 mt-2">
+                <div className="flex flex-wrap gap-1">
                   {org.skills.slice(0, 2).map((skill) => (
-                    <Badge key={skill} variant="secondary" className="text-xs px-2 py-0">
+                    <Badge key={skill} variant="secondary" className="text-xs px-1.5 py-0">
                       {skill}
                     </Badge>
                   ))}
                   {org.skills.length > 2 && (
-                    <Badge variant="secondary" className="text-xs px-2 py-0">
+                    <Badge variant="secondary" className="text-xs px-1.5 py-0">
                       +{org.skills.length - 2}
                     </Badge>
                   )}
                 </div>
 
                 {selectedOrg === org.id && (
-                  <div className="pt-3 border-t border-border space-y-2">
+                  <div className="pt-2 sm:pt-3 border-t border-border space-y-2">
                     <Button size="sm" className="w-full text-xs">
                       Join Organization
                     </Button>
@@ -423,10 +428,10 @@ export function InteractiveMap() {
           ))}
 
           {filteredOrganizations.length === 0 && (
-            <div className="glass rounded-xl p-8 text-center">
-              <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-              <h3 className="font-semibold mb-2">No organizations found</h3>
-              <p className="text-muted-foreground text-sm">Try adjusting your search or filter criteria</p>
+            <div className="glass rounded-xl p-6 sm:p-8 text-center">
+              <MapPin className="w-8 h-8 sm:w-12 sm:h-12 text-muted-foreground mx-auto mb-3 sm:mb-4 opacity-50" />
+              <h3 className="font-semibold mb-2 text-sm sm:text-base">No organizations found</h3>
+              <p className="text-muted-foreground text-xs sm:text-sm">Try adjusting your search or filter criteria</p>
             </div>
           )}
         </div>
