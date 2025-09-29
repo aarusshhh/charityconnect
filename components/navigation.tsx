@@ -12,6 +12,7 @@ export function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Heart className="w-5 h-5 text-primary-foreground" />
@@ -19,6 +20,7 @@ export function Navigation() {
             <span className="text-xl font-bold text-foreground">CharityConnect</span>
           </Link>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link
               href="/community"
@@ -46,14 +48,19 @@ export function Navigation() {
               className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-2"
             >
               <School2Icon className="w-4 h-4" />
-              <span>{"Schools"}</span>
+              <span>Schools</span>
             </Link>
-            <Button variant="outline" className="glass-hover bg-transparent">
-              Sign In
-            </Button>
-            <Button className="bg-primary hover:bg-primary/90">Get Started</Button>
+
+            {/* Buttons */}
+            <div className="flex items-center space-x-4 ml-4">
+              <Button variant="outline" className="glass-hover bg-transparent">
+                Sign In
+              </Button>
+              <Button className="bg-primary hover:bg-primary/90">Get Started</Button>
+            </div>
           </div>
 
+          {/* Mobile Hamburger */}
           <div className="md:hidden">
             <Button variant="ghost" size="sm" onClick={() => setIsOpen(!isOpen)}>
               {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -61,20 +68,34 @@ export function Navigation() {
           </div>
         </div>
 
+        {/* Mobile Dropdown Menu */}
         {isOpen && (
-          <div className="md:hidden py-4 space-y-4">
-            <Link href="/community" className="block text-muted-foreground hover:text-foreground transition-colors">
+          <div className="md:hidden py-4 space-y-4 px-2">
+            <Link
+              href="/community"
+              className="block text-muted-foreground hover:text-foreground transition-colors"
+            >
               Communities
             </Link>
-            <a href="/#map" className="block text-muted-foreground hover:text-foreground transition-colors">
+            <a
+              href="/#map"
+              className="block text-muted-foreground hover:text-foreground transition-colors"
+            >
               Map
             </a>
-            <Link href="/opportunities" className="block text-muted-foreground hover:text-foreground transition-colors">
+            <Link
+              href="/opportunities"
+              className="block text-muted-foreground hover:text-foreground transition-colors"
+            >
               Opportunities
             </Link>
-            <Link href="/location" className="block text-muted-foreground hover:text-foreground transition-colors">
-              Near Me
+            <Link
+              href="/location"
+              className="block text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Schools
             </Link>
+
             <div className="flex flex-col space-y-2 pt-4">
               <Button variant="outline" className="glass-hover bg-transparent">
                 Sign In
