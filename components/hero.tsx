@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32">
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20" />
 
       <div className="absolute inset-0 opacity-10">
@@ -15,12 +15,12 @@ export function Hero() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="space-y-6 md:space-y-8">
-          <div className="inline-flex items-center space-x-2 glass rounded-full px-4 py-2 md:px-6 md:py-3 text-sm">
+          <div className="inline-flex items-center space-x-2 glass rounded-full px-4 py-2 md:px-6 text-sm md:py-3">
             <Heart className="w-4 h-4 text-primary" />
             <span className="text-muted-foreground">Connecting communities across the UAE</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-balance leading-tight px-2">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-balance leading-tight px-2 tracking-tighter leading-3 font-extrabold">
             Make a difference in the <span className="text-primary">UAE</span> community
           </h1>
 

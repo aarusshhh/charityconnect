@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Heart, Menu, X, MapPin, Users, Calendar, NavigationIcon } from "lucide-react"
+import { Heart, Menu, X, MapPin, Users, Calendar, School2Icon } from "lucide-react"
 import Link from "next/link"
 
 export function Navigation() {
@@ -45,8 +45,8 @@ export function Navigation() {
               href="/location"
               className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-2"
             >
-              <NavigationIcon className="w-4 h-4" />
-              <span>Near Me</span>
+              <School2Icon className="w-4 h-4" />
+              <span>{"Schools"}</span>
             </Link>
             <Button variant="outline" className="glass-hover bg-transparent">
               Sign In
