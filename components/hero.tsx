@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Heart, Users, MapPin } from "lucide-react"
+import { Trophy, Heart, Users, MapPin } from "lucide-react"
 import Link from "next/link"
 
 export function Hero() {
@@ -32,8 +32,8 @@ export function Hero() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
             <Link href="/location">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg">
-                School Ranking
-                <ArrowRight className="w-5 h-5 ml-2" />
+                School Rankings
+                <Trophy  className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             <Link href="/community">
