@@ -246,50 +246,47 @@ export function CommunityHub() {
   )
 
   return (
-    <section className="py-16 sm:py-20 md:py-24 relative">
+    <section className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 sm:mb-16">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-balance px-2">
-            Connect with your community
-          </h1>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto text-pretty px-4">
+        <div className="text-center mb-16">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-balance">Connect with your community</h1>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
             Join local charity communities, discover upcoming events, and share your impact with like-minded
             individuals.
           </p>
         </div>
 
-        <div className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-12">
-          <div className="mb-6 sm:mb-8">
+        <div className="glass rounded-3xl p-8 md:p-12">
+          <div className="mb-8">
             <div className="relative max-w-md mx-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 sm:w-5 sm:h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <Input
                 placeholder="Search communities, events, or posts..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9 sm:pl-10 glass-hover text-sm sm:text-base"
+                className="pl-10 glass-hover"
               />
             </div>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 glass mb-6 sm:mb-8">
-              <TabsTrigger value="communities" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
-                <Users className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span className="hidden sm:inline">Communities</span>
-                <span className="sm:hidden">Groups</span>
+            <TabsList className="grid w-full grid-cols-3 glass">
+              <TabsTrigger value="communities" className="flex items-center space-x-2">
+                <Users className="w-4 h-4" />
+                <span>Communities</span>
               </TabsTrigger>
-              <TabsTrigger value="events" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
-                <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+              <TabsTrigger value="events" className="flex items-center space-x-2">
+                <Calendar className="w-4 h-4" />
                 <span>Events</span>
               </TabsTrigger>
-              <TabsTrigger value="feed" className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
-                <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span>Feed</span>
+              <TabsTrigger value="feed" className="flex items-center space-x-2">
+                <MessageCircle className="w-4 h-4" />
+                <span>Community Feed</span>
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="communities" className="mt-6 sm:mt-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+            <TabsContent value="communities" className="mt-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {filteredCommunities.map((community) => (
                   <Card key={community.id} className="glass glass-hover border-border/50 overflow-hidden">
                     <div className="aspect-video relative overflow-hidden">
@@ -298,15 +295,15 @@ export function CommunityHub() {
                         alt={community.name}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
+                      <div className="absolute top-4 left-4">
                         <Badge
                           variant="outline"
-                          className={`text-xs ${categoryColors[community.category as keyof typeof categoryColors]}`}
+                          className={categoryColors[community.category as keyof typeof categoryColors]}
                         >
                           {community.category}
                         </Badge>
                       </div>
-                      <div className="absolute top-3 sm:top-4 right-3 sm:right-4">
+                      <div className="absolute top-4 right-4">
                         <div className="flex items-center space-x-1 glass rounded-full px-2 py-1">
                           <Star className="w-3 h-3 text-yellow-400 fill-current" />
                           <span className="text-xs font-medium">{community.rating}</span>
@@ -314,52 +311,47 @@ export function CommunityHub() {
                       </div>
                     </div>
 
-                    <CardHeader className="p-3 sm:p-6">
-                      <CardTitle className="flex items-start justify-between text-base sm:text-lg">
-                        <span className="line-clamp-2 pr-2">{community.name}</span>
+                    <CardHeader>
+                      <CardTitle className="flex items-center justify-between">
+                        <span>{community.name}</span>
                         {community.isJoined && (
-                          <Badge
-                            variant="outline"
-                            className="bg-green-500/20 text-green-400 border-green-500/30 text-xs flex-shrink-0"
-                          >
+                          <Badge variant="outline" className="bg-green-500/20 text-green-400 border-green-500/30">
                             Joined
                           </Badge>
                         )}
                       </CardTitle>
-                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
-                        {community.description}
-                      </p>
+                      <p className="text-muted-foreground text-sm leading-relaxed">{community.description}</p>
                     </CardHeader>
 
-                    <CardContent className="space-y-3 sm:space-y-4 p-3 sm:p-6 pt-0">
-                      <div className="grid grid-cols-3 gap-3 sm:gap-4 text-center">
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-3 gap-4 text-center">
                         <div>
-                          <div className="text-base sm:text-lg font-semibold text-primary">{community.members}</div>
+                          <div className="text-lg font-semibold text-primary">{community.members}</div>
                           <div className="text-xs text-muted-foreground">Members</div>
                         </div>
                         <div>
-                          <div className="text-base sm:text-lg font-semibold text-primary">{community.events}</div>
+                          <div className="text-lg font-semibold text-primary">{community.events}</div>
                           <div className="text-xs text-muted-foreground">Events</div>
                         </div>
                         <div>
-                          <div className="text-base sm:text-lg font-semibold text-primary">{community.posts}</div>
+                          <div className="text-lg font-semibold text-primary">{community.posts}</div>
                           <div className="text-xs text-muted-foreground">Posts</div>
                         </div>
                       </div>
 
                       <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                        <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                        <span className="truncate">{community.location}</span>
+                        <MapPin className="w-4 h-4" />
+                        <span>{community.location}</span>
                       </div>
 
                       <div className="flex gap-2">
                         <Button
-                          className={`flex-1 text-xs sm:text-sm ${community.isJoined ? "bg-muted hover:bg-muted/80" : "bg-primary hover:bg-primary/90"}`}
+                          className={`flex-1 ${community.isJoined ? "bg-muted hover:bg-muted/80" : "bg-primary hover:bg-primary/90"}`}
                         >
                           {community.isJoined ? "View Community" : "Join Community"}
                         </Button>
-                        <Button variant="outline" className="glass-hover bg-transparent px-3">
-                          <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <Button variant="outline" className="glass-hover bg-transparent">
+                          <Share2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </CardContent>
@@ -368,13 +360,11 @@ export function CommunityHub() {
               </div>
 
               {filteredCommunities.length === 0 && (
-                <div className="text-center py-12 sm:py-16">
-                  <Users className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground mx-auto mb-3 sm:mb-4 opacity-50" />
-                  <h3 className="text-lg sm:text-xl font-semibold mb-2">No communities found</h3>
-                  <p className="text-muted-foreground mb-4 sm:mb-6 text-sm sm:text-base">
-                    Try adjusting your search terms
-                  </p>
-                  <Button className="bg-primary hover:bg-primary/90 text-sm">
+                <div className="text-center py-16">
+                  <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
+                  <h3 className="text-xl font-semibold mb-2">No communities found</h3>
+                  <p className="text-muted-foreground mb-6">Try adjusting your search terms</p>
+                  <Button className="bg-primary hover:bg-primary/90">
                     <Plus className="w-4 h-4 mr-2" />
                     Create Community
                   </Button>
@@ -382,43 +372,43 @@ export function CommunityHub() {
               )}
             </TabsContent>
 
-            <TabsContent value="events" className="mt-6 sm:mt-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+            <TabsContent value="events" className="mt-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {filteredEvents.map((event) => (
                   <Card key={event.id} className="glass glass-hover border-border/50">
-                    <CardHeader className="p-3 sm:p-6">
+                    <CardHeader>
                       <div className="flex items-start justify-between">
-                        <div className="flex-1 min-w-0">
-                          <CardTitle className="text-base sm:text-lg mb-2 line-clamp-2">{event.title}</CardTitle>
-                          <p className="text-muted-foreground text-sm truncate">{event.community}</p>
+                        <div className="flex-1">
+                          <CardTitle className="text-lg mb-2">{event.title}</CardTitle>
+                          <p className="text-muted-foreground text-sm">{event.community}</p>
                         </div>
                         <Badge
                           variant="outline"
-                          className={`text-xs ml-2 flex-shrink-0 ${categoryColors[event.category as keyof typeof categoryColors]}`}
+                          className={categoryColors[event.category as keyof typeof categoryColors]}
                         >
                           {event.category}
                         </Badge>
                       </div>
                     </CardHeader>
 
-                    <CardContent className="space-y-3 sm:space-y-4 p-3 sm:p-6 pt-0">
-                      <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{event.description}</p>
+                    <CardContent className="space-y-4">
+                      <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
 
-                      <div className="grid grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
+                      <div className="grid grid-cols-2 gap-4 text-sm">
                         <div className="flex items-center space-x-2">
-                          <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground flex-shrink-0" />
-                          <span className="truncate">{new Date(event.date).toLocaleDateString()}</span>
+                          <Calendar className="w-4 h-4 text-muted-foreground" />
+                          <span>{new Date(event.date).toLocaleDateString()}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground flex-shrink-0" />
+                          <Clock className="w-4 h-4 text-muted-foreground" />
                           <span>{event.time}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground flex-shrink-0" />
-                          <span className="truncate">{event.location}</span>
+                          <MapPin className="w-4 h-4 text-muted-foreground" />
+                          <span>{event.location}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Users className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground flex-shrink-0" />
+                          <Users className="w-4 h-4 text-muted-foreground" />
                           <span>
                             {event.attendees}/{event.maxAttendees}
                           </span>
@@ -434,13 +424,13 @@ export function CommunityHub() {
 
                       <div className="flex gap-2">
                         <Button
-                          className={`flex-1 text-xs sm:text-sm ${event.isRegistered ? "bg-muted hover:bg-muted/80" : "bg-primary hover:bg-primary/90"}`}
+                          className={`flex-1 ${event.isRegistered ? "bg-muted hover:bg-muted/80" : "bg-primary hover:bg-primary/90"}`}
                         >
                           {event.isRegistered ? "Registered" : "Register"}
-                          {!event.isRegistered && <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-2" />}
+                          {!event.isRegistered && <ArrowRight className="w-4 h-4 ml-2" />}
                         </Button>
-                        <Button variant="outline" className="glass-hover bg-transparent px-3">
-                          <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <Button variant="outline" className="glass-hover bg-transparent">
+                          <Share2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </CardContent>
@@ -449,13 +439,11 @@ export function CommunityHub() {
               </div>
 
               {filteredEvents.length === 0 && (
-                <div className="text-center py-12 sm:py-16">
-                  <Calendar className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground mx-auto mb-3 sm:mb-4 opacity-50" />
-                  <h3 className="text-lg sm:text-xl font-semibold mb-2">No events found</h3>
-                  <p className="text-muted-foreground mb-4 sm:mb-6 text-sm sm:text-base">
-                    Try adjusting your search terms
-                  </p>
-                  <Button className="bg-primary hover:bg-primary/90 text-sm">
+                <div className="text-center py-16">
+                  <Calendar className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
+                  <h3 className="text-xl font-semibold mb-2">No events found</h3>
+                  <p className="text-muted-foreground mb-6">Try adjusting your search terms</p>
+                  <Button className="bg-primary hover:bg-primary/90">
                     <Plus className="w-4 h-4 mr-2" />
                     Create Event
                   </Button>
@@ -463,15 +451,15 @@ export function CommunityHub() {
               )}
             </TabsContent>
 
-            <TabsContent value="feed" className="mt-6 sm:mt-8">
-              <div className="space-y-4 sm:space-y-6">
+            <TabsContent value="feed" className="mt-8">
+              <div className="space-y-6">
                 {filteredPosts.map((post) => (
                   <Card key={post.id} className="glass glass-hover border-border/50">
-                    <CardContent className="p-4 sm:p-6">
-                      <div className="flex items-start space-x-3 sm:space-x-4">
-                        <Avatar className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0">
+                    <CardContent className="p-6">
+                      <div className="flex items-start space-x-4">
+                        <Avatar>
                           <AvatarImage src={post.avatar || "/placeholder.svg"} alt={post.author} />
-                          <AvatarFallback className="text-xs sm:text-sm">
+                          <AvatarFallback>
                             {post.author
                               .split(" ")
                               .map((n) => n[0])
@@ -479,11 +467,11 @@ export function CommunityHub() {
                           </AvatarFallback>
                         </Avatar>
 
-                        <div className="flex-1 space-y-2 sm:space-y-3 min-w-0">
+                        <div className="flex-1 space-y-3">
                           <div className="flex items-center justify-between">
-                            <div className="min-w-0">
-                              <h4 className="font-semibold text-sm sm:text-base truncate">{post.author}</h4>
-                              <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                            <div>
+                              <h4 className="font-semibold">{post.author}</h4>
+                              <p className="text-sm text-muted-foreground">
                                 {post.community} • {post.timestamp}
                               </p>
                             </div>
@@ -491,32 +479,32 @@ export function CommunityHub() {
 
                           <p className="text-sm leading-relaxed">{post.content}</p>
 
-                          <div className="flex items-center space-x-4 sm:space-x-6 pt-2">
+                          <div className="flex items-center space-x-6 pt-2">
                             <Button
                               variant="ghost"
                               size="sm"
-                              className={`flex items-center space-x-2 text-xs sm:text-sm px-2 ${post.isLiked ? "text-red-400" : "text-muted-foreground"}`}
+                              className={`flex items-center space-x-2 ${post.isLiked ? "text-red-400" : "text-muted-foreground"}`}
                             >
-                              <Heart className={`w-3 h-3 sm:w-4 sm:h-4 ${post.isLiked ? "fill-current" : ""}`} />
+                              <Heart className={`w-4 h-4 ${post.isLiked ? "fill-current" : ""}`} />
                               <span>{post.likes}</span>
                             </Button>
 
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="flex items-center space-x-2 text-muted-foreground text-xs sm:text-sm px-2"
+                              className="flex items-center space-x-2 text-muted-foreground"
                             >
-                              <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+                              <MessageCircle className="w-4 h-4" />
                               <span>{post.comments}</span>
                             </Button>
 
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="flex items-center space-x-2 text-muted-foreground text-xs sm:text-sm px-2"
+                              className="flex items-center space-x-2 text-muted-foreground"
                             >
-                              <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                              <span className="hidden sm:inline">Share</span>
+                              <Share2 className="w-4 h-4" />
+                              <span>Share</span>
                             </Button>
                           </div>
                         </div>
@@ -527,13 +515,11 @@ export function CommunityHub() {
               </div>
 
               {filteredPosts.length === 0 && (
-                <div className="text-center py-12 sm:py-16">
-                  <MessageCircle className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground mx-auto mb-3 sm:mb-4 opacity-50" />
-                  <h3 className="text-lg sm:text-xl font-semibold mb-2">No posts found</h3>
-                  <p className="text-muted-foreground mb-4 sm:mb-6 text-sm sm:text-base">
-                    Try adjusting your search terms
-                  </p>
-                  <Button className="bg-primary hover:bg-primary/90 text-sm">
+                <div className="text-center py-16">
+                  <MessageCircle className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
+                  <h3 className="text-xl font-semibold mb-2">No posts found</h3>
+                  <p className="text-muted-foreground mb-6">Try adjusting your search terms</p>
+                  <Button className="bg-primary hover:bg-primary/90">
                     <Plus className="w-4 h-4 mr-2" />
                     Create Post
                   </Button>

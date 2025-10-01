@@ -273,36 +273,36 @@ export function VolunteerOpportunities() {
   const categories = Array.from(new Set(opportunities.map((opp) => opp.category)))
 
   return (
-    <section className="py-16 sm:py-20 md:py-24 relative">
+    <section className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 sm:mb-16">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-balance px-2">
+        <div className="text-center mb-16">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-balance">
             Find volunteer opportunities across the UAE
           </h1>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto text-pretty px-4">
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
             Discover meaningful ways to contribute to UAE society. Filter by emirates, skills, and time commitment to
             find opportunities that match your passion for serving the community.
           </p>
         </div>
 
-        <div className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-12">
-          <div className="mb-6 sm:mb-8 space-y-4 sm:space-y-6">
-            <div className="flex flex-col gap-3 sm:gap-4">
+        <div className="glass rounded-3xl p-8 md:p-12">
+          <div className="mb-8 space-y-6">
+            <div className="flex flex-col lg:flex-row gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 sm:w-5 sm:h-5" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
                 <Input
-                  placeholder="Search by title, organization, skills..."
+                  placeholder="Search by title, organization, skills, emirate, or location..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9 sm:pl-10 glass-hover text-sm sm:text-base"
+                  className="pl-10 glass-hover"
                 />
               </div>
               <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+                <Filter className="w-5 h-5 text-muted-foreground" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="glass rounded-lg px-2 sm:px-3 py-2 text-xs sm:text-sm bg-transparent border border-border flex-1 sm:flex-none"
+                  className="glass rounded-lg px-3 py-2 text-sm bg-transparent border border-border"
                 >
                   <option value="date">Latest</option>
                   <option value="rating">Highest Rated</option>
@@ -312,13 +312,13 @@ export function VolunteerOpportunities() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label className="text-xs sm:text-sm font-medium mb-2 block">Category</label>
+                <label className="text-sm font-medium mb-2 block">Category</label>
                 <select
                   value={filterCategory}
                   onChange={(e) => setFilterCategory(e.target.value)}
-                  className="w-full glass rounded-lg px-2 sm:px-3 py-2 text-xs sm:text-sm bg-transparent border border-border"
+                  className="w-full glass rounded-lg px-3 py-2 text-sm bg-transparent border border-border"
                 >
                   <option value="all">All Categories</option>
                   {categories.map((category) => (
@@ -330,11 +330,11 @@ export function VolunteerOpportunities() {
               </div>
 
               <div>
-                <label className="text-xs sm:text-sm font-medium mb-2 block">Urgency</label>
+                <label className="text-sm font-medium mb-2 block">Urgency</label>
                 <select
                   value={filterUrgency}
                   onChange={(e) => setFilterUrgency(e.target.value)}
-                  className="w-full glass rounded-lg px-2 sm:px-3 py-2 text-xs sm:text-sm bg-transparent border border-border"
+                  className="w-full glass rounded-lg px-3 py-2 text-sm bg-transparent border border-border"
                 >
                   <option value="all">All Urgency</option>
                   <option value="high">High Priority</option>
@@ -344,11 +344,11 @@ export function VolunteerOpportunities() {
               </div>
 
               <div>
-                <label className="text-xs sm:text-sm font-medium mb-2 block">Location</label>
+                <label className="text-sm font-medium mb-2 block">Location</label>
                 <select
                   value={filterRemote}
                   onChange={(e) => setFilterRemote(e.target.value)}
-                  className="w-full glass rounded-lg px-2 sm:px-3 py-2 text-xs sm:text-sm bg-transparent border border-border"
+                  className="w-full glass rounded-lg px-3 py-2 text-sm bg-transparent border border-border"
                 >
                   <option value="all">All Locations</option>
                   <option value="remote">Remote</option>
@@ -357,14 +357,14 @@ export function VolunteerOpportunities() {
               </div>
 
               <div className="flex items-end">
-                <Button className="w-full bg-primary hover:bg-primary/90 text-xs sm:text-sm py-2">Apply Filters</Button>
+                <Button className="w-full bg-primary hover:bg-primary/90">Apply Filters</Button>
               </div>
             </div>
           </div>
 
-          <div className="mb-4 sm:mb-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <p className="text-muted-foreground text-sm">
+          <div className="mb-6">
+            <div className="flex items-center justify-between">
+              <p className="text-muted-foreground">
                 Showing {filteredOpportunities.length} of {opportunities.length} opportunities
               </p>
               <div className="flex flex-wrap gap-2">
@@ -374,14 +374,13 @@ export function VolunteerOpportunities() {
                     <Badge
                       key={category}
                       variant="outline"
-                      className={`cursor-pointer transition-all text-xs ${
+                      className={`cursor-pointer transition-all ${
                         filterCategory === category ? typeColors[category as keyof typeof typeColors] : "glass-hover"
                       }`}
                       onClick={() => setFilterCategory(filterCategory === category ? "all" : category)}
                     >
                       <Icon className="w-3 h-3 mr-1" />
-                      <span className="hidden sm:inline">{category}</span>
-                      <span className="sm:hidden">{category.split(" ")[0]}</span>
+                      {category}
                     </Badge>
                   )
                 })}
@@ -389,24 +388,24 @@ export function VolunteerOpportunities() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredOpportunities.map((opportunity) => {
               const Icon = categoryIcons[opportunity.category as keyof typeof categoryIcons]
               return (
                 <Card key={opportunity.id} className="glass glass-hover border-border/50">
-                  <CardHeader className="pb-3 sm:pb-4">
+                  <CardHeader className="pb-4">
                     <div className="flex items-start justify-between">
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="text-base sm:text-lg mb-2 line-clamp-2">{opportunity.title}</CardTitle>
-                        <p className="text-muted-foreground text-sm truncate">{opportunity.organization}</p>
+                      <div className="flex-1">
+                        <CardTitle className="text-lg mb-2">{opportunity.title}</CardTitle>
+                        <p className="text-muted-foreground text-sm">{opportunity.organization}</p>
                         <p className="text-muted-foreground text-xs mt-1">{opportunity.emirate} Emirate</p>
                       </div>
-                      <div className="flex flex-col items-end space-y-2 ml-2">
-                        <Badge variant="outline" className={`text-xs ${urgencyColors[opportunity.urgency]}`}>
+                      <div className="flex items-center space-x-2">
+                        <Badge variant="outline" className={urgencyColors[opportunity.urgency]}>
                           {opportunity.urgency}
                         </Badge>
                         {opportunity.remote && (
-                          <Badge variant="outline" className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">
+                          <Badge variant="outline" className="bg-blue-500/20 text-blue-400 border-blue-500/30">
                             Remote
                           </Badge>
                         )}
@@ -414,59 +413,50 @@ export function VolunteerOpportunities() {
                     </div>
                   </CardHeader>
 
-                  <CardContent className="space-y-3 sm:space-y-4">
-                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
-                      {opportunity.description}
-                    </p>
+                  <CardContent className="space-y-4">
+                    <p className="text-sm text-muted-foreground leading-relaxed">{opportunity.description}</p>
 
-                    <div className="grid grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
+                    <div className="grid grid-cols-2 gap-4 text-sm">
                       <div className="flex items-center space-x-2">
-                        <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground flex-shrink-0" />
-                        <span className="truncate">{opportunity.location}</span>
+                        <MapPin className="w-4 h-4 text-muted-foreground" />
+                        <span>{opportunity.location}</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground flex-shrink-0" />
+                        <Clock className="w-4 h-4 text-muted-foreground" />
                         <span>{opportunity.commitment}</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground flex-shrink-0" />
+                        <Calendar className="w-4 h-4 text-muted-foreground" />
                         <span>{opportunity.duration}</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Users className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground flex-shrink-0" />
+                        <Users className="w-4 h-4 text-muted-foreground" />
                         <span>{opportunity.volunteers} volunteers</span>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current" />
+                        <Star className="w-4 h-4 text-yellow-400 fill-current" />
                         <span className="text-sm font-medium">{opportunity.rating}</span>
                       </div>
-                      <div className="flex items-center space-x-1 text-xs sm:text-sm text-muted-foreground">
-                        <Heart className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                        <span className="truncate max-w-32">{opportunity.impact}</span>
+                      <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+                        <Heart className="w-4 h-4" />
+                        <span>{opportunity.impact}</span>
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-1">
-                      {opportunity.skills.slice(0, 2).map((skill) => (
-                        <Badge key={skill} variant="secondary" className="text-xs px-1.5 py-0">
+                    <div className="flex flex-wrap gap-2">
+                      {opportunity.skills.map((skill) => (
+                        <Badge key={skill} variant="secondary" className="text-xs">
                           {skill}
                         </Badge>
                       ))}
-                      {opportunity.skills.length > 2 && (
-                        <Badge variant="secondary" className="text-xs px-1.5 py-0">
-                          +{opportunity.skills.length - 2}
-                        </Badge>
-                      )}
                     </div>
 
                     <div className="flex gap-2 pt-2">
-                      <Button className="flex-1 bg-primary hover:bg-primary/90 text-xs sm:text-sm py-2">
-                        Apply Now
-                      </Button>
-                      <Button variant="outline" className="glass-hover bg-transparent text-xs sm:text-sm px-3">
+                      <Button className="flex-1 bg-primary hover:bg-primary/90">Apply Now</Button>
+                      <Button variant="outline" className="glass-hover bg-transparent">
                         Learn More
                       </Button>
                     </div>
@@ -477,14 +467,12 @@ export function VolunteerOpportunities() {
           </div>
 
           {filteredOpportunities.length === 0 && (
-            <div className="text-center py-12 sm:py-16">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Search className="w-6 h-6 sm:w-8 sm:h-8 text-muted-foreground" />
+            <div className="text-center py-16">
+              <div className="w-16 h-16 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Search className="w-8 h-8 text-muted-foreground" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">No opportunities found</h3>
-              <p className="text-muted-foreground mb-4 sm:mb-6 text-sm sm:text-base">
-                Try adjusting your search criteria or filters
-              </p>
+              <h3 className="text-xl font-semibold mb-2">No opportunities found</h3>
+              <p className="text-muted-foreground mb-6">Try adjusting your search criteria or filters</p>
               <Button
                 onClick={() => {
                   setSearchTerm("")
@@ -493,7 +481,7 @@ export function VolunteerOpportunities() {
                   setFilterRemote("all")
                 }}
                 variant="outline"
-                className="glass-hover bg-transparent text-sm"
+                className="glass-hover bg-transparent"
               >
                 Clear All Filters
               </Button>

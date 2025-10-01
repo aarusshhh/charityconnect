@@ -1,109 +1,51 @@
 "use client"
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Heart, Menu, X, MapPin, Users, Calendar, School2Icon } from "lucide-react"
+import { Heart, MapPin, Users, Calendar, School2 } from "lucide-react"
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export function Navigation() {
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Heart className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold text-foreground">CharityConnect</span>
-          </Link>
+        <div className="grid grid-cols-3 items-center h-16 gap-4">
+          
+          {/* Logo on the left */}
+          <div className="flex justify-start">
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <Heart className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <span className="text-xl font-bold text-foreground">CharityConnect</span>
+            </Link>
+          </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/community"
-              className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-2"
-            >
+          {/* Nav links in the center */}
+          <div className="flex justify-center items-center space-x-8">
+            <Link href="/community" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground">
               <Users className="w-4 h-4" />
               <span>Communities</span>
             </Link>
-            <a
-              href="/#map"
-              className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-2"
-            >
+            <Link href="/#map" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground">
               <MapPin className="w-4 h-4" />
               <span>Map</span>
-            </a>
-            <Link
-              href="/opportunities"
-              className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-2"
-            >
+            </Link>
+            <Link href="/opportunities" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground">
               <Calendar className="w-4 h-4" />
               <span>Opportunities</span>
             </Link>
-            <Link
-              href="/location"
-              className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-2"
-            >
-              <School2Icon className="w-4 h-4" />
+            <Link href="/location" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground">
+              <School2 className="w-4 h-4" />
               <span>Schools</span>
             </Link>
-
-            {/* Buttons */}
-            <div className="flex items-center space-x-4 ml-4">
-              <Button variant="outline" className="glass-hover bg-transparent">
-                Sign In
-              </Button>
-              <Button className="bg-primary hover:bg-primary/90">Get Started</Button>
-            </div>
           </div>
 
-          {/* Mobile Hamburger */}
-          <div className="md:hidden">
-            <Button variant="ghost" size="sm" onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </Button>
+          {/* Buttons on the far right */}
+          <div className="flex justify-end items-center space-x-3">
+            <Button variant="outline" className="glass-hover bg-transparent">Sign In</Button>
+            <Button className="bg-primary hover:bg-primary/90">Get Started</Button>
           </div>
         </div>
-
-        {/* Mobile Dropdown Menu */}
-        {isOpen && (
-          <div className="md:hidden py-4 space-y-4 px-2">
-            <Link
-              href="/community"
-              className="block text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Communities
-            </Link>
-            <a
-              href="/#map"
-              className="block text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Map
-            </a>
-            <Link
-              href="/opportunities"
-              className="block text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Opportunities
-            </Link>
-            <Link
-              href="/location"
-              className="block text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Schools
-            </Link>
-
-            <div className="flex flex-col space-y-2 pt-4">
-              <Button variant="outline" className="glass-hover bg-transparent">
-                Sign In
-              </Button>
-              <Button className="bg-primary hover:bg-primary/90">Get Started</Button>
-            </div>
-          </div>
-        )}
       </div>
     </nav>
   )
