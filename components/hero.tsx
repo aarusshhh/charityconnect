@@ -32,7 +32,7 @@ export function Hero() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
             <Link href="/location">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg">
-                Find UAE Charities
+                Check the School Leaderboard
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
