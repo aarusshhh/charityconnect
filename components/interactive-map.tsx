@@ -166,7 +166,6 @@ const urgencyColors = {
 
 export function InteractiveMap() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedOrg, setSelectedOrg] = useState<number | null>(null)
   const [filterType, setFilterType] = useState<string>("all")
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
   const [locationLoading, setLocationLoading] = useState(false)
@@ -184,10 +183,8 @@ export function InteractiveMap() {
           }
           setUserLocation(location)
           setLocationLoading(false)
-          console.log("[v0] User location obtained:", location)
         },
         (error) => {
-          console.log("[v0] Geolocation error:", error)
           setUserLocation({ lat: 25.2048, lng: 55.2708 })
           setLocationLoading(false)
         },
@@ -206,12 +203,14 @@ export function InteractiveMap() {
 
           const map = L.map(mapRef.current).setView([25.2048, 55.2708], 8)
 
-          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: "© OpenStreetMap contributors",
+          L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+            attribution: '© OpenStreetMap contributors © CARTO',
+            subdomains: 'abcd',
+            maxZoom: 20
           }).addTo(map)
 
           organizations.forEach((org) => {
-            const marker = L.marker([org.lat, org.lng])
+            L.marker([org.lat, org.lng])
               .addTo(map)
               .bindPopup(`
                 <div class="p-2">
@@ -224,31 +223,34 @@ export function InteractiveMap() {
                   </div>
                 </div>
               `)
-
-            marker.on("click", () => {
-              setSelectedOrg(org.id)
-            })
           })
 
           setMapInstance(map)
-          console.log("[v0] Map initialized successfully")
         } catch (error) {
-          console.log("[v0] Map initialization error:", error)
+          console.log("Map initialization error:", error)
         }
       }
     }
 
     initializeMap()
-  }, [mapInstance])
+
+    return () => {
+      if (mapInstance) {
+        mapInstance.remove()
+      }
+    }
+  }, [])
 
   useEffect(() => {
-    if (mapInstance && userLocation) {
-      const L = require("leaflet")
-      L.marker([userLocation.lat, userLocation.lng]).addTo(mapInstance).bindPopup("Your Location").openPopup()
-
-      mapInstance.setView([userLocation.lat, userLocation.lng], 12)
-      console.log("[v0] Map updated with user location")
+    const addUserMarker = async () => {
+      if (mapInstance && userLocation) {
+        const L = await import("leaflet")
+        L.default.marker([userLocation.lat, userLocation.lng]).addTo(mapInstance).bindPopup("Your Location").openPopup()
+        mapInstance.setView([userLocation.lat, userLocation.lng], 12)
+      }
     }
+    
+    addUserMarker()
   }, [mapInstance, userLocation])
 
   const filteredOrganizations = organizations.filter((org) => {
@@ -267,71 +269,82 @@ export function InteractiveMap() {
   const uniqueTypes = Array.from(new Set(organizations.map((org) => org.type)))
 
   const handleOrgClick = (org: Organization) => {
-    setSelectedOrg(selectedOrg === org.id ? null : org.id)
     if (mapInstance) {
       mapInstance.setView([org.lat, org.lng], 15)
     }
   }
 
   return (
-    <div className="w-full h-full">
-      <div className="mb-6 space-y-4">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-            <Input
-              placeholder="Search by organization, emirate, city, or skills..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 glass-hover"
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <Filter className="w-5 h-5 text-muted-foreground" />
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
-              className="glass rounded-lg px-3 py-2 text-sm bg-transparent border border-border"
-            >
-              <option value="all">All Types</option>
-              {uniqueTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          {uniqueTypes.slice(0, 4).map((type) => (
-            <Badge
-              key={type}
-              variant="outline"
-              className={`cursor-pointer transition-all ${
-                filterType === type ? typeColors[type as keyof typeof typeColors] : "glass-hover"
-              }`}
-              onClick={() => setFilterType(filterType === type ? "all" : type)}
-            >
-              {type}
-            </Badge>
-          ))}
-        </div>
+    <div className="w-full h-full relative overflow-hidden">
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full blur-3xl animate-pulse delay-2000" />
+        <div className="absolute top-40 right-1/4 w-60 h-60 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full blur-3xl animate-pulse delay-500" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-[600px]">
-        <div className="lg:col-span-3">
-          <div className="glass rounded-2xl p-6 h-full relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-muted/10 via-transparent to-primary/5 rounded-2xl" />
+      <div className="relative z-10">
+        <div className="mb-6 space-y-4">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+              <Input
+                placeholder="Search by organization, emirate, city, or skills..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 glass-hover border border-purple-500/20"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <Filter className="w-5 h-5 text-muted-foreground" />
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+                className="glass rounded-lg px-3 py-2 text-sm bg-transparent border border-purple-500/20"
+              >
+                <option value="all">All Types</option>
+                {uniqueTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-            <div className="relative z-10 h-full">
+          <div className="flex flex-wrap gap-2">
+            {uniqueTypes.slice(0, 4).map((type) => (
+              <Badge
+                key={type}
+                variant="outline"
+                className={`cursor-pointer transition-all ${
+                  filterType === type ? typeColors[type as keyof typeof typeColors] : "glass-hover border-purple-500/20"
+                }`}
+                onClick={() => setFilterType(filterType === type ? "all" : type)}
+              >
+                {type}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-[700px]">
+          <div className="lg:col-span-3 glass rounded-2xl p-6 h-full relative overflow-hidden border border-purple-500/20 bg-gradient-to-br from-purple-500/5 via-transparent to-blue-500/5">
+            <div className="relative z-10 h-full flex flex-col">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold">UAE Charity Map</h3>
+                <h3 className="text-lg font-semibold text-white drop-shadow-[0_0_10px_rgba(147,51,234,0.3)]">
+                  <span className="relative inline-block group cursor-default">
+                    <span className="relative z-10 text-white transition-all duration-300 group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] drop-shadow-[0_0_15px_rgba(22,163,74,0.4)] drop-shadow-[0_0_25px_rgba(255,255,255,0.2)] drop-shadow-[0_0_35px_rgba(220,38,38,0.3)] group-hover:drop-shadow-[0_0_30px_rgba(22,163,74,0.7)] group-hover:drop-shadow-[0_0_40px_rgba(255,255,255,0.4)] group-hover:drop-shadow-[0_0_50px_rgba(220,38,38,0.6)]">
+                      UAE
+                    </span>
+                  </span>{" "}
+                  Charity Map
+                </h3>
                 <div className="flex items-center gap-2">
                   <Button
                     size="sm"
                     variant="outline"
-                    className="glass-hover bg-transparent"
+                    className="glass-hover bg-transparent border-purple-500/30"
                     onClick={getUserLocation}
                     disabled={locationLoading}
                   >
@@ -345,90 +358,84 @@ export function InteractiveMap() {
                 </div>
               </div>
 
-              <div ref={mapRef} className="h-full rounded-xl overflow-hidden" style={{ minHeight: "400px" }} />
+              <div
+  ref={mapRef}
+  className="flex-1 rounded-2xl overflow-hidden border border-purple-500/20"
+  style={{ minHeight: "244px", padding: "8px" }}
+/>
+
             </div>
           </div>
-        </div>
 
-        <div className="lg:col-span-2 space-y-4 max-h-[600px] overflow-y-auto">
-          {filteredOrganizations.map((org) => (
-            <div
-              key={org.id}
-              className={`glass rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                selectedOrg === org.id ? "ring-2 ring-primary scale-[1.02]" : "glass-hover"
-              }`}
-              onClick={() => handleOrgClick(org)}
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-sm mb-1">{org.name}</h4>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className={`text-xs ${typeColors[org.type as keyof typeof typeColors]}`}>
-                      {org.type}
-                    </Badge>
-                    <span className="text-xs text-muted-foreground">
-                      {org.city}, {org.emirate}
-                    </span>
+          <div className="lg:col-span-2 space-y-4 max-h-[700px] overflow-y-auto pr-2">
+            {filteredOrganizations.map((org) => (
+              <div
+                key={org.id}
+                className="glass rounded-xl p-4 cursor-pointer transition-all duration-200 border border-purple-500/20 hover:border-purple-500/50 hover:bg-gradient-to-br hover:from-purple-500/10 hover:to-blue-500/10"
+                onClick={() => handleOrgClick(org)}
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-sm mb-1 text-white drop-shadow-[0_0_8px_rgba(147,51,234,0.3)]">
+                      {org.name}
+                    </h4>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge variant="outline" className={`text-xs ${typeColors[org.type as keyof typeof typeColors]}`}>
+                        {org.type}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">
+                        {org.city}, {org.emirate}
+                      </span>
+                    </div>
+                  </div>
+                  <Badge variant="outline" className={`text-xs ${urgencyColors[org.urgency]}`}>
+                    {org.urgency} priority
+                  </Badge>
+                </div>
+
+                <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{org.description}</p>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center space-x-1">
+                      <Users className="w-3 h-3" />
+                      <span>{org.volunteers} volunteers</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="w-3 h-3" />
+                      <span>{org.events} events</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-1 text-xs">
+                    <Heart className="w-3 h-3" />
+                    <span>{org.impact}</span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {org.skills.slice(0, 2).map((skill) => (
+                      <Badge key={skill} variant="secondary" className="text-xs px-2 py-0">
+                        {skill}
+                      </Badge>
+                    ))}
+                    {org.skills.length > 2 && (
+                      <Badge variant="secondary" className="text-xs px-2 py-0">
+                        +{org.skills.length - 2}
+                      </Badge>
+                    )}
                   </div>
                 </div>
-                <Badge variant="outline" className={`text-xs ${urgencyColors[org.urgency]}`}>
-                  {org.urgency} priority
-                </Badge>
               </div>
+            ))}
 
-              <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{org.description}</p>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center space-x-1">
-                    <Users className="w-3 h-3" />
-                    <span>{org.volunteers} volunteers</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Calendar className="w-3 h-3" />
-                    <span>{org.events} events</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-1 text-xs">
-                  <Heart className="w-3 h-3" />
-                  <span>{org.impact}</span>
-                </div>
-
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {org.skills.slice(0, 2).map((skill) => (
-                    <Badge key={skill} variant="secondary" className="text-xs px-2 py-0">
-                      {skill}
-                    </Badge>
-                  ))}
-                  {org.skills.length > 2 && (
-                    <Badge variant="secondary" className="text-xs px-2 py-0">
-                      +{org.skills.length - 2}
-                    </Badge>
-                  )}
-                </div>
-
-                {selectedOrg === org.id && (
-                  <div className="pt-3 border-t border-border space-y-2">
-                    <Button size="sm" className="w-full text-xs">
-                      Join Organization
-                    </Button>
-                    <Button size="sm" variant="outline" className="w-full text-xs glass-hover bg-transparent">
-                      View Details
-                    </Button>
-                  </div>
-                )}
+            {filteredOrganizations.length === 0 && (
+              <div className="glass rounded-xl p-8 text-center border border-purple-500/20">
+                <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                <h3 className="font-semibold mb-2">No organizations found</h3>
+                <p className="text-muted-foreground text-sm">Try adjusting your search or filter criteria</p>
               </div>
-            </div>
-          ))}
-
-          {filteredOrganizations.length === 0 && (
-            <div className="glass rounded-xl p-8 text-center">
-              <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-              <h3 className="font-semibold mb-2">No organizations found</h3>
-              <p className="text-muted-foreground text-sm">Try adjusting your search or filter criteria</p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
