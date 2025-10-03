@@ -219,84 +219,6 @@ export function LocationService() {
               <div className="text-xs text-muted-foreground">Needs Improvement</div>
             </div>
           </div>
-
-          <div className="mt-6 flex justify-center">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90">Get Started with Schools</Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl">
-                <DialogHeader>
-                  <DialogTitle>Register Your School</DialogTitle>
-                </DialogHeader>
-                <form className="space-y-4 mt-2" onSubmit={handleRegister}>
-                  <Input
-                    placeholder="School Name"
-                    value={newSchool.name}
-                    onChange={(e) => setNewSchool({ ...newSchool, name: e.target.value })}
-                    required
-                  />
-                  <Input
-                    placeholder="School Address"
-                    value={newSchool.address}
-                    onChange={(e) => setNewSchool({ ...newSchool, address: e.target.value })}
-                    required
-                  />
-                  <Input
-                    placeholder="City"
-                    value={newSchool.city}
-                    onChange={(e) => setNewSchool({ ...newSchool, city: e.target.value })}
-                    required
-                  />
-                  <Input
-                    placeholder="Postal Code"
-                    value={newSchool.postalCode}
-                    onChange={(e) => setNewSchool({ ...newSchool, postalCode: e.target.value })}
-                    required
-                  />
-                  <Input
-                    placeholder="Contact Person"
-                    value={newSchool.contactPerson}
-                    onChange={(e) => setNewSchool({ ...newSchool, contactPerson: e.target.value })}
-                    required
-                  />
-                  <Input
-                    type="email"
-                    placeholder="Email Address"
-                    value={newSchool.email}
-                    onChange={(e) => setNewSchool({ ...newSchool, email: e.target.value })}
-                    required
-                  />
-                  <Input
-                    placeholder="Phone Number"
-                    value={newSchool.phone}
-                    onChange={(e) => setNewSchool({ ...newSchool, phone: e.target.value })}
-                    required
-                  />
-                  <Input
-                    type="number"
-                    placeholder="Weekly Emissions (tons CO₂)"
-                    value={newSchool.emissions}
-                    onChange={(e) => setNewSchool({ ...newSchool, emissions: e.target.value })}
-                    required
-                  />
-                  <Input
-                    type="number"
-                    placeholder="Initial Score"
-                    value={newSchool.score}
-                    onChange={(e) => setNewSchool({ ...newSchool, score: e.target.value })}
-                    required
-                  />
-
-                  {error && <p className="text-destructive text-sm">{error}</p>}
-
-                  <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
-                    Register School
-                  </Button>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
         </CardContent>
       </Card>
 
@@ -340,11 +262,6 @@ export function LocationService() {
                 </div>
               </div>
             ))}
-          </div>
-          <div className="mt-6 text-center">
-            <Button variant="outline" className="glass-hover bg-transparent">
-              View Full Weekly Report
-            </Button>
           </div>
         </CardContent>
       </Card>
