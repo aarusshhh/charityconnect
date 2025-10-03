@@ -360,7 +360,7 @@ export function InteractiveMap() {
 
               <div
   ref={mapRef}
-  className="flex-1 rounded-2xl overflow-hidden border border-purple-500/20"
+  className="flex-1 rounded-2xl overflow-hidden border"
   style={{ minHeight: "244px", padding: "8px" }}
 />
 

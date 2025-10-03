@@ -27,10 +27,6 @@ export function Navigation() {
               <Users className="w-4 h-4" />
               <span>Communities</span>
             </Link>
-            <Link href="/#map" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
-              <MapPin className="w-4 h-4" />
-              <span>Map</span>
-            </Link>
             <Link href="/opportunities" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
               <Calendar className="w-4 h-4" />
               <span>Opportunities</span>
@@ -82,14 +78,6 @@ export function Navigation() {
             >
               <Users className="w-4 h-4" />
               <span>Communities</span>
-            </Link>
-            <Link 
-              href="/#map" 
-              className="flex items-center space-x-2 text-muted-foreground hover:text-foreground hover:bg-accent py-3 px-2 rounded-lg transition-all duration-200"
-              onClick={() => setIsOpen(false)}
-            >
-              <MapPin className="w-4 h-4" />
-              <span>Map</span>
             </Link>
             <Link 
               href="/opportunities" 

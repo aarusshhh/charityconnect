@@ -7,52 +7,25 @@ import { CommunityMap } from "@/components/community-map"
 import { CallToAction } from "@/components/call-to-action"
 import { Navigation } from "@/components/navigation"
 
-import { motion } from "framer-motion"
-import { useInView } from "react-intersection-observer"
-
-function RevealOnScroll({ children }: { children: React.ReactNode }) {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  })
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 60 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-      className="mb-20"
-    >
-      {children}
-    </motion.div>
-  )
-}
-
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-background">
-      <Navigation />
+    <main className="min-h-screen bg-background relative overflow-hidden">
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full blur-3xl animate-pulse delay-2000" />
+        <div className="absolute top-1/3 right-1/4 w-60 h-60 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full blur-3xl animate-pulse delay-500" />
+        <div className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full blur-3xl animate-pulse delay-1500" />
+      </div>
 
-      <RevealOnScroll>
+      <div className="relative z-10">
+        <Navigation />
         <Hero />
-      </RevealOnScroll>
-
-      <RevealOnScroll>
         <ImpactStats />
-      </RevealOnScroll>
-
-      <RevealOnScroll>
         <Features />
-      </RevealOnScroll>
-
-      <RevealOnScroll>
         <CommunityMap />
-      </RevealOnScroll>
-
-      <RevealOnScroll>
         <CallToAction />
-      </RevealOnScroll>
+      </div>
     </main>
   )
 }
