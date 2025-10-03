@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect, useRef } from "react"
-import { Heart, Users, Calendar, School2, Menu, X, UserCircle } from "lucide-react"
+import { Heart, Users, Calendar, School2, Menu, X, UserCircle, LogOut } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
@@ -20,13 +20,14 @@ export function Navigation() {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
 
-  // Sign Out handler
   const handleSignOut = () => {
     localStorage.removeItem("currentUser")
-    router.push("/auth")
+    setIsAuth(false)
+    setUser(null)
+    setIsProfileDropdownOpen(false)
+    setIsOpen(false)
   }
 
-  // Check auth state on mount
   useEffect(() => {
     const storedCurrentUser = localStorage.getItem("currentUser")
     const storedUsersData = localStorage.getItem("charityUsers")
@@ -41,7 +42,6 @@ export function Navigation() {
     }
   }, [])
 
-  // Handle click outside to close profile dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -62,14 +62,12 @@ export function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Heart className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold">CharityConnect</span>
           </Link>
-          {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center space-x-6">
             <Link 
               href="/community" 
@@ -96,7 +94,6 @@ export function Navigation() {
               <span>Schools</span>
             </Link>
           </div>
-          {/* Desktop Auth Section */}
           <div className="hidden md:flex items-center gap-3 relative">
             {!isAuth ? (
               <>
@@ -117,7 +114,7 @@ export function Navigation() {
                 </Button>
               </>
             ) : (
-              <>
+              <div className="relative">
                 <Button 
                   variant="outline" 
                   size="default" 
@@ -132,27 +129,26 @@ export function Navigation() {
                 {isProfileDropdownOpen && (
                   <div 
                     ref={dropdownRef}
-                    className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-lg w-48 z-10"
+                    className="absolute right-0 top-full mt-2 bg-background border rounded-xl shadow-lg overflow-hidden min-w-56 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
                   >
-                    <div className="py-2 px-4">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="w-full hover:bg-muted transition-colors" 
-                        onClick={() => {
-                          setIsProfileDropdownOpen(false)
-                          handleSignOut()
-                        }}
+                    <div className="p-3 border-b bg-muted/50">
+                      <p className="text-sm font-medium truncate">{user?.name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                    </div>
+                    <div className="p-2">
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full flex items-center space-x-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10 rounded-lg transition-colors group"
                       >
-                        Sign Out
-                      </Button>
+                        <LogOut className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                        <span>Sign Out</span>
+                      </button>
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             )}
           </div>
-          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 text-foreground hover:bg-accent rounded-lg transition-all duration-200 active:scale-95"
@@ -172,7 +168,6 @@ export function Navigation() {
             </div>
           </button>
         </div>
-        {/* Mobile Menu */}
         <div 
           className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
             isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
@@ -223,39 +218,18 @@ export function Navigation() {
                   </Button>
                 </>
               ) : (
-                <div className="relative">
-                  <Button 
-                    variant="outline" 
-                    size="default" 
-                    className="w-full glass-hover flex items-center space-x-2" 
-                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                    aria-expanded={isProfileDropdownOpen}
-                    aria-haspopup="true"
+                <div className="space-y-2">
+                  <div className="p-3 bg-muted/50 rounded-lg border">
+                    <p className="text-sm font-medium truncate">{user?.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                  </div>
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full flex items-center justify-center space-x-2 px-4 py-2.5 text-sm font-medium text-destructive bg-destructive/10 hover:bg-destructive/20 rounded-lg transition-colors border border-destructive/20"
                   >
-                    <UserCircle className="w-4 h-4" />
-                    <span>{user?.name || "Profile"}</span>
-                  </Button>
-                  {isProfileDropdownOpen && (
-                    <div 
-                      ref={dropdownRef}
-                      className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-lg w-48 z-10"
-                    >
-                      <div className="py-2 px-4">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="w-full hover:bg-muted transition-colors" 
-                          onClick={() => {
-                            setIsProfileDropdownOpen(false)
-                            setIsOpen(false) // Close mobile menu
-                            handleSignOut()
-                          }}
-                        >
-                          Sign Out
-                        </Button>
-                      </div>
-                    </div>
-                  )}
+                    <LogOut className="w-4 h-4" />
+                    <span>Sign Out</span>
+                  </button>
                 </div>
               )}
             </div>

@@ -2,23 +2,54 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
+  const [colors, setColors] = React.useState<string[]>([])
+
+  React.useEffect(() => {
+    const generateRandomColor = () => {
+      const hue = Math.floor(Math.random() * 360)
+      const saturation = 60 + Math.floor(Math.random() * 30)
+      const lightness = 50 + Math.floor(Math.random() * 20)
+      return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+    }
+
+    const generateGradient = () => {
+      const color1 = generateRandomColor()
+      const color2 = generateRandomColor()
+      return `linear-gradient(to right, ${color1}, ${color2})`
+    }
+
+    setColors([
+      generateGradient(),
+      generateGradient(),
+      generateGradient()
+    ])
+  }, [])
+
   return (
     <div
       data-slot="card"
       className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm relative',
+        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm relative overflow-hidden',
         className,
       )}
       {...props}
     >
-      {/* Animated circles with adjusted z-index and opacity */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full blur-3xl animate-pulse z-[-1] opacity-10" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full blur-3xl animate-pulse delay-1000 z-[-1] opacity-10" />
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full blur-3xl animate-pulse delay-2000 z-[-1] opacity-10" />
-      <div className="absolute top-1/3 right-1/4 w-60 h-60 bg-gradient-to-r from-lime-500 to-green-500 rounded-full blur-3xl animate-pulse delay-500 z-[-1] opacity-10" />
-      <div className="absolute bottom-1/3 left-1/4 w-64 h-64 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-full blur-3xl animate-pulse delay-1500 z-[-1] opacity-10" />
+      <div 
+        className="absolute -top-20 -left-20 w-72 h-72 rounded-full blur-3xl opacity-20 animate-pulse" 
+        style={{ background: colors[0] || 'transparent' }}
+      />
+      <div 
+        className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full blur-3xl opacity-20 animate-pulse" 
+        style={{ background: colors[1] || 'transparent', animationDelay: '1s' }}
+      />
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full blur-3xl opacity-15 animate-pulse" 
+        style={{ background: colors[2] || 'transparent', animationDelay: '2s' }}
+      />
       
-      {props.children}
+      <div className="relative z-10">
+        {props.children}
+      </div>
     </div>
   )
 }
