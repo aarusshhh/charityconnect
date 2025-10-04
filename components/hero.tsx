@@ -11,7 +11,7 @@ export function Hero() {
     headingWords.forEach((_, index) => {
       setTimeout(() => {
         setWordsRevealed(prev => [...prev, index])
-      }, index * 150)
+      }, index * 250)
     })
   }, [])
 
