@@ -11,7 +11,7 @@ export function Hero() {
     headingWords.forEach((_, index) => {
       setTimeout(() => {
         setWordsRevealed(prev => [...prev, index])
-      }, index * 400)
+      }, index * 150)
     })
   }, [])
 
@@ -20,42 +20,28 @@ export function Hero() {
       <style>{`
         @keyframes glowReveal {
           0% {
-            opacity: 0;
-            filter: blur(15px);
-            text-shadow: 
-              0 0 50px white,
-              0 0 100px white,
-              0 0 150px rgba(147,51,234,0.9),
-              0 0 200px rgba(59,130,246,0.7);
-          }
-          50% {
             opacity: 1;
-            filter: blur(8px);
+            color: transparent;
+            filter: blur(10px);
             text-shadow: 
               0 0 40px white,
-              0 0 80px rgba(147,51,234,0.8),
-              0 0 120px rgba(59,130,246,0.6);
-          }
-          92% {
-            opacity: 1;
-            filter: blur(0px);
-            text-shadow: 
-              0 0 15px rgba(147,51,234,0.4),
-              0 0 25px rgba(59,130,246,0.3),
-              0 0 35px rgba(6,182,212,0.2);
+              0 0 80px white,
+              0 0 160px white;
           }
           100% {
             opacity: 1;
-            filter: blur(0px);
+            color: white;
+            filter: blur(0);
             text-shadow: none;
           }
         }
         .glow-word {
           display: inline-block;
           opacity: 0;
+          filter: blur(10px);
         }
         .glow-word.reveal {
-          animation: glowReveal 1.8s ease-out forwards;
+          animation: glowReveal 0.6s ease forwards;
         }
       `}</style>
 
