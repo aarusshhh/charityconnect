@@ -5,14 +5,22 @@ import Link from "next/link"
 
 export function Hero() {
   const [wordsRevealed, setWordsRevealed] = useState<number[]>([])
+  const [sparkActive, setSparkActive] = useState(false)
   const headingWords = ["Make", "a", "difference", "in", "the", "UAE", "community"]
 
   useEffect(() => {
     headingWords.forEach((_, index) => {
       setTimeout(() => {
-        setWordsRevealed(prev => [...prev, index])
-      }, index * 250)
+        setWordsRevealed((prev) => [...prev, index])
+      }, index * 150)
     })
+
+    setTimeout(() => {
+      setSparkActive(true)
+      setTimeout(() => {
+        setSparkActive(false)
+      }, 500)
+    }, headingWords.length * 150 + 100)
   }, [])
 
   return (
@@ -35,6 +43,17 @@ export function Hero() {
             text-shadow: none;
           }
         }
+        @keyframes backgroundSpark {
+          0% {
+            filter: brightness(1) saturate(1);
+          }
+          50% {
+            filter: brightness(100) saturate(0) blur(40px);
+          }
+          100% {
+            filter: brightness(1) saturate(1);
+          }
+        }
         .glow-word {
           display: inline-block;
           opacity: 0;
@@ -43,11 +62,14 @@ export function Hero() {
         .glow-word.reveal {
           animation: glowReveal 0.6s ease forwards;
         }
+        .spark-active {
+          animation: backgroundSpark 0.4s ease-out forwards;
+        }
       `}</style>
 
       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-pink-500/10" />
       
-      <div className="absolute inset-0 opacity-30">
+      <div className={`absolute inset-0 opacity-30 ${sparkActive ? "spark-active" : ""}`}>
         <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full blur-3xl animate-pulse delay-2000" />
@@ -67,12 +89,16 @@ export function Hero() {
               <span key={index}>
                 {index === 5 ? (
                   <span className="relative inline-block group cursor-default">
-                    <span className={`glow-word relative z-10 text-white transition-all duration-300 group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] drop-shadow-[0_0_15px_rgba(147,51,234,0.4)] drop-shadow-[0_0_25px_rgba(59,130,246,0.3)] drop-shadow-[0_0_35px_rgba(6,182,212,0.2)] group-hover:drop-shadow-[0_0_30px_rgba(147,51,234,0.7)] group-hover:drop-shadow-[0_0_40px_rgba(59,130,246,0.6)] group-hover:drop-shadow-[0_0_50px_rgba(6,182,212,0.4)] ${wordsRevealed.includes(index) ? 'reveal' : ''}`}>
+                    <span
+                      className={`glow-word relative z-10 text-white transition-all duration-300 group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] drop-shadow-[0_0_15px_rgba(147,51,234,0.4)] drop-shadow-[0_0_25px_rgba(59,130,246,0.3)] drop-shadow-[0_0_35px_rgba(6,182,212,0.2)] group-hover:drop-shadow-[0_0_30px_rgba(147,51,234,0.7)] group-hover:drop-shadow-[0_0_40px_rgba(59,130,246,0.6)] group-hover:drop-shadow-[0_0_50px_rgba(6,182,212,0.4)] ${
+                        wordsRevealed.includes(index) ? "reveal" : ""
+                      }`}
+                    >
                       {word}
                     </span>
                   </span>
                 ) : (
-                  <span className={`glow-word ${wordsRevealed.includes(index) ? 'reveal' : ''}`}>
+                  <span className={`glow-word ${wordsRevealed.includes(index) ? "reveal" : ""}`}>
                     {word}
                   </span>
                 )}
