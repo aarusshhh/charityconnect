@@ -43,15 +43,20 @@ export function Hero() {
             text-shadow: none;
           }
         }
-        @keyframes backgroundSpark {
+        @keyframes textSpark {
           0% {
-            filter: brightness(1) saturate(1);
+            text-shadow: none;
           }
           50% {
-            filter: brightness(100) saturate(0) blur(40px);
+            text-shadow: 
+              0 0 40px rgba(255, 255, 255, 1),
+              0 0 80px rgba(255, 255, 255, 0.8),
+              0 0 120px rgba(255, 255, 255, 0.6),
+              0 0 160px rgba(255, 255, 255, 0.4),
+              0 0 200px rgba(255, 255, 255, 0.2);
           }
           100% {
-            filter: brightness(1) saturate(1);
+            text-shadow: none;
           }
         }
         .glow-word {
@@ -62,21 +67,21 @@ export function Hero() {
         .glow-word.reveal {
           animation: glowReveal 0.6s ease forwards;
         }
-        .spark-active {
-          animation: backgroundSpark 0.4s ease-out forwards;
+        .spark-active h1 {
+          animation: textSpark 0.4s ease-out forwards;
         }
       `}</style>
 
       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-pink-500/5 md:from-purple-500/15 md:via-blue-500/15 md:to-pink-500/15" />
       
-      <div className={`absolute inset-0 opacity-15 md:opacity-40 ${sparkActive ? "spark-active" : ""}`}>
+      <div className="absolute inset-0 opacity-15 md:opacity-40">
         <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full blur-3xl animate-pulse delay-2000" />
         <div className="absolute top-40 right-1/4 w-60 h-60 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full blur-3xl animate-pulse delay-500" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center ${sparkActive ? "spark-active" : ""}`}>
         <div className="space-y-8">
           <div className="inline-flex items-center space-x-2 glass rounded-full px-6 py-3 text-sm border border-purple-500/10 md:border-purple-500/30 bg-gradient-to-r from-purple-500/5 to-pink-500/5 md:from-purple-500/15 md:to-pink-500/15">
             <Heart className="w-4 h-4 text-pink-500" />
