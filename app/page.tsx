@@ -1,13 +1,29 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Hero } from "@/components/hero"
 import { Features } from "@/components/features"
 import { ImpactStats } from "@/components/impact-stats"
 import { CommunityMap } from "@/components/community-map"
 import { CallToAction } from "@/components/call-to-action"
 import { Navigation } from "@/components/navigation"
+import { LoadingScreen } from "@/components/loadingscreen"
 
 export default function HomePage() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (isLoading) {
+    return <LoadingScreen />
+  }
+
   return (
     <main className="min-h-screen bg-background relative overflow-hidden">
       <div className="absolute inset-0 opacity-20 pointer-events-none">
