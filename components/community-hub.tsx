@@ -247,320 +247,187 @@ export function CommunityHub() {
   const [activeTab, setActiveTab] = useState("communities")
 
   const filteredCommunities = communities.filter(
-    (community) =>
-      community.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      community.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      community.category.toLowerCase().includes(searchTerm.toLowerCase()),
+    (c) =>
+      c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.category.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
   const filteredEvents = events.filter(
-    (event) =>
-      event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.community.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchTerm.toLowerCase()),
+    (e) =>
+      e.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      e.community.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      e.description.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
   const filteredPosts = posts.filter(
-    (post) =>
-      post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.community.toLowerCase().includes(searchTerm.toLowerCase()),
+    (p) =>
+      p.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.community.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
   return (
-    <section className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full blur-3xl animate-pulse delay-2000" />
-        <div className="absolute top-40 right-1/4 w-60 h-60 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full blur-3xl animate-pulse delay-500" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-balance">
-            Connect with{" "}
-            <span className="relative inline-block group cursor-default">
-              <span className="relative z-10 text-white transition-all duration-300 group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] drop-shadow-[0_0_15px_rgba(22,163,74,0.4)] drop-shadow-[0_0_25px_rgba(255,255,255,0.2)] drop-shadow-[0_0_35px_rgba(220,38,38,0.3)] group-hover:drop-shadow-[0_0_30px_rgba(22,163,74,0.7)] group-hover:drop-shadow-[0_0_40px_rgba(255,255,255,0.4)] group-hover:drop-shadow-[0_0_50px_rgba(220,38,38,0.6)]">
-                UAE
-              </span>
-            </span>{" "}
-            communities
+    <section className="py-16 relative overflow-hidden bg-neutral-900">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-10">
+          <h1 className="text-2xl md:text-3xl font-bold mb-2 text-white">
+            Connect with <span className="text-purple-400">UAE</span> communities
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-            Join charity organizations across the Emirates, discover volunteer opportunities, and share your impact with like-minded individuals.
+          <p className="text-gray-300 text-sm md:text-base max-w-xl mx-auto">
+            Join charity organizations, discover volunteer opportunities, and share your impact with like-minded individuals.
           </p>
         </div>
 
-        <div className="glass rounded-3xl p-4 sm:p-8 md:p-12 border border-purple-500/20 bg-gradient-to-br from-purple-500/5 via-transparent to-blue-500/5">
-          <div className="mb-8">
+        <div className="rounded-2xl p-4 sm:p-6 md:p-8 border border-purple-500/20 bg-neutral-800/40">
+          <div className="mb-4">
             <div className="relative max-w-md mx-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Search communities, events, or posts..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 glass-hover border-purple-500/20"
+                className="pl-9 rounded-lg bg-neutral-900/50 border-gray-700 placeholder-gray-400 text-sm focus:ring-purple-500"
               />
             </div>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 glass border-purple-500/20">
-              <TabsTrigger value="communities" className="flex items-center justify-center space-x-2">
-                <Users className="w-4 h-4" />
+            <TabsList className="grid w-full grid-cols-3 rounded-lg bg-neutral-900/50 border border-purple-500/20 text-sm">
+              <TabsTrigger value="communities" className="flex items-center justify-center py-1 rounded-lg hover:bg-purple-700/20 transition">
+                <Users className="w-3 h-3" />
                 <span className="hidden sm:inline">Communities</span>
               </TabsTrigger>
-              <TabsTrigger value="events" className="flex items-center justify-center space-x-2">
-                <Calendar className="w-4 h-4" />
+              <TabsTrigger value="events" className="flex items-center justify-center py-1 rounded-lg hover:bg-purple-700/20 transition">
+                <Calendar className="w-3 h-3" />
                 <span className="hidden sm:inline">Events</span>
               </TabsTrigger>
-              <TabsTrigger value="feed" className="flex items-center justify-center space-x-2">
-                <MessageCircle className="w-4 h-4" />
+              <TabsTrigger value="feed" className="flex items-center justify-center py-1 rounded-lg hover:bg-purple-700/20 transition">
+                <MessageCircle className="w-3 h-3" />
                 <span className="hidden sm:inline">Feed</span>
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="communities" className="mt-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {filteredCommunities.map((community) => (
-                  <Card key={community.id} className="glass glass-hover border-purple-500/20 overflow-hidden bg-gradient-to-br from-purple-500/5 to-blue-500/5">
-                    <div className="aspect-video relative overflow-hidden">
-                      <img
-                        src={community.image || "/placeholder.svg"}
-                        alt={community.name}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute top-4 left-4">
-                        <Badge
-                          variant="outline"
-                          className={categoryColors[community.category as keyof typeof categoryColors]}
-                        >
-                          {community.category}
-                        </Badge>
-                      </div>
-                      <div className="absolute top-4 right-4">
-                        <div className="flex items-center space-x-1 glass rounded-full px-2 py-1 border border-purple-500/20">
+            <TabsContent value="communities" className="mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {filteredCommunities.map((c) => (
+                  <Card key={c.id} className="bg-neutral-800/60 border border-purple-500/20 rounded-xl overflow-hidden hover:scale-[1.01] transition-transform text-sm">
+                    <div className="p-3">
+                      <div className="relative rounded-lg overflow-hidden mb-3">
+                        <img src={c.image || "/placeholder.svg"} alt={c.name} className="w-full h-32 object-cover rounded-lg" />
+                        <div className="absolute top-2 left-2">
+                          <Badge variant="outline" className={categoryColors[c.category as keyof typeof categoryColors]}>
+                            {c.category}
+                          </Badge>
+                        </div>
+                        <div className="absolute top-2 right-2 bg-black/30 rounded-full px-2 py-0.5 flex items-center gap-1 text-white text-xs">
                           <Star className="w-3 h-3 text-yellow-400 fill-current" />
-                          <span className="text-xs font-medium">{community.rating}</span>
+                          {c.rating}
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="font-semibold text-white">{c.name}</span>
+                        {c.isJoined && (
+                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">Joined</Badge>
+                        )}
+                      </div>
+                      <p className="text-gray-300 text-xs mb-2">{c.description}</p>
+
+                      <div className="flex justify-between text-gray-400 text-xs mb-2">
+                        <span>{c.members} Members</span>
+                        <span>{c.events} Events</span>
+                        <span>{c.posts} Posts</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-gray-400 text-xs mb-3">
+                        <MapPin className="w-3 h-3" /> {c.location}
+                      </div>
+
+                      <div className="flex gap-2">
+                        <Button className={`flex-1 text-xs py-1 ${c.isJoined ? "bg-gray-700 hover:bg-gray-600" : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"}`}>
+                          {c.isJoined ? "View" : "Join"}
+                        </Button>
+                        <Button variant="outline" className="border border-purple-500/30 text-gray-300 py-1">
+                          <Share2 className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="events" className="mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {filteredEvents.map((e) => (
+                  <Card key={e.id} className="bg-neutral-800/60 border border-purple-500/20 rounded-xl overflow-hidden hover:scale-[1.01] transition-transform text-sm p-3">
+                    <div className="flex justify-between items-start mb-1">
+                      <span className="font-semibold text-white">{e.title}</span>
+                      <Badge variant="outline" className={categoryColors[e.category as keyof typeof categoryColors]}>
+                        {e.category}
+                      </Badge>
+                    </div>
+                    <p className="text-gray-300 text-xs mb-1">{e.community}</p>
+                    <p className="text-gray-400 text-xs mb-2">{e.description}</p>
+                    <div className="grid grid-cols-2 gap-2 text-gray-400 text-xs mb-2">
+                      <div className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(e.date).toLocaleDateString()}</div>
+                      <div className="flex items-center gap-1"><Clock className="w-3 h-3" /> {e.time}</div>
+                      <div className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {e.location}</div>
+                      <div className="flex items-center gap-1"><Users className="w-3 h-3" /> {e.attendees}/{e.maxAttendees}</div>
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-1 mb-2">
+                      <div
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 h-1 rounded-full transition-all duration-300"
+                        style={{ width: `${(e.attendees / e.maxAttendees) * 100}%` }}
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button className={`flex-1 text-xs py-1 ${e.isRegistered ? "bg-gray-700 hover:bg-gray-600" : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"}`}>
+                        {e.isRegistered ? "Registered" : "Register"}
+                        {!e.isRegistered && <ArrowRight className="w-3 h-3 ml-1" />}
+                      </Button>
+                      <Button variant="outline" className="border border-purple-500/30 text-gray-300 py-1">
+                        <Share2 className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="feed" className="mt-6">
+              <div className="space-y-3">
+                {filteredPosts.map((p) => (
+                  <Card key={p.id} className="bg-neutral-800/60 border border-purple-500/20 rounded-xl overflow-hidden hover:scale-[1.01] transition-transform text-sm p-3">
+                    <div className="flex items-start gap-2">
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage src={p.avatar || "/placeholder.svg"} alt={p.author} />
+                        <AvatarFallback>{p.author.split(" ").map(n => n[0]).join("")}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center mb-1">
+                          <div>
+                            <span className="font-semibold text-white text-xs">{p.author}</span>
+                            <p className="text-gray-400 text-[10px]">{p.community} • {p.timestamp}</p>
+                          </div>
+                        </div>
+                        <p className="text-gray-300 text-xs mb-2">{p.content}</p>
+                        <div className="flex gap-2">
+                          <Button variant="ghost" size="sm" className={`flex items-center gap-1 h-6 px-2 ${p.isLiked ? "text-red-400" : "text-gray-400"}`}>
+                            <Heart className={`w-3 h-3 ${p.isLiked ? "fill-current" : ""}`} /> {p.likes}
+                          </Button>
+                          <Button variant="ghost" size="sm" className="flex items-center gap-1 text-gray-400 h-6 px-2">
+                            <MessageCircle className="w-3 h-3" /> {p.comments}
+                          </Button>
+                          <Button variant="ghost" size="sm" className="flex items-center gap-1 text-gray-400 h-6 px-2">
+                            <Share2 className="w-3 h-3" /> <span className="hidden sm:inline text-xs">Share</span>
+                          </Button>
                         </div>
                       </div>
                     </div>
-
-                    <CardHeader>
-                      <CardTitle className="flex items-center justify-between text-white drop-shadow-[0_0_8px_rgba(147,51,234,0.3)]">
-                        <span className="text-base sm:text-lg">{community.name}</span>
-                        {community.isJoined && (
-                          <Badge variant="outline" className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
-                            Joined
-                          </Badge>
-                        )}
-                      </CardTitle>
-                      <p className="text-muted-foreground text-sm leading-relaxed">{community.description}</p>
-                    </CardHeader>
-
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-3 gap-4 text-center">
-                        <div>
-                          <div className="text-lg font-semibold text-white drop-shadow-[0_0_8px_rgba(147,51,234,0.3)]">{community.members}</div>
-                          <div className="text-xs text-muted-foreground">Members</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-semibold text-white drop-shadow-[0_0_8px_rgba(147,51,234,0.3)]">{community.events}</div>
-                          <div className="text-xs text-muted-foreground">Events</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-semibold text-white drop-shadow-[0_0_8px_rgba(147,51,234,0.3)]">{community.posts}</div>
-                          <div className="text-xs text-muted-foreground">Posts</div>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                        <MapPin className="w-4 h-4" />
-                        <span>{community.location}</span>
-                      </div>
-
-                      <div className="flex gap-2">
-                        <Button
-                          className={`flex-1 text-sm ${community.isJoined ? "bg-muted hover:bg-muted/80" : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"}`}
-                        >
-                          {community.isJoined ? "View Community" : "Join Community"}
-                        </Button>
-                        <Button variant="outline" className="glass-hover bg-transparent border-purple-500/30">
-                          <Share2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
                   </Card>
                 ))}
               </div>
-
-              {filteredCommunities.length === 0 && (
-                <div className="text-center py-16">
-                  <Users className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
-                  <h3 className="text-xl font-semibold mb-2">No communities found</h3>
-                  <p className="text-muted-foreground mb-6">Try adjusting your search terms</p>
-                  <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create Community
-                  </Button>
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="events" className="mt-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {filteredEvents.map((event) => (
-                  <Card key={event.id} className="glass glass-hover border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-blue-500/5">
-                    <CardHeader>
-                      <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
-                        <div className="flex-1">
-                          <CardTitle className="text-base sm:text-lg mb-2 text-white drop-shadow-[0_0_8px_rgba(147,51,234,0.3)]">{event.title}</CardTitle>
-                          <p className="text-muted-foreground text-sm">{event.community}</p>
-                        </div>
-                        <Badge
-                          variant="outline"
-                          className={categoryColors[event.category as keyof typeof categoryColors]}
-                        >
-                          {event.category}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-
-                    <CardContent className="space-y-4">
-                      <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                        <div className="flex items-center space-x-2">
-                          <Calendar className="w-4 h-4 text-muted-foreground" />
-                          <span>{new Date(event.date).toLocaleDateString()}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Clock className="w-4 h-4 text-muted-foreground" />
-                          <span>{event.time}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <MapPin className="w-4 h-4 text-muted-foreground" />
-                          <span>{event.location}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Users className="w-4 h-4 text-muted-foreground" />
-                          <span>
-                            {event.attendees}/{event.maxAttendees}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="w-full bg-muted/30 rounded-full h-2">
-                        <div
-                          className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-300"
-                          style={{ width: `${(event.attendees / event.maxAttendees) * 100}%` }}
-                        />
-                      </div>
-
-                      <div className="flex gap-2">
-                        <Button
-                          className={`flex-1 text-sm ${event.isRegistered ? "bg-muted hover:bg-muted/80" : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"}`}
-                        >
-                          {event.isRegistered ? "Registered" : "Register"}
-                          {!event.isRegistered && <ArrowRight className="w-4 h-4 ml-2" />}
-                        </Button>
-                        <Button variant="outline" className="glass-hover bg-transparent border-purple-500/30">
-                          <Share2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {filteredEvents.length === 0 && (
-                <div className="text-center py-16">
-                  <Calendar className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
-                  <h3 className="text-xl font-semibold mb-2">No events found</h3>
-                  <p className="text-muted-foreground mb-6">Try adjusting your search terms</p>
-                  <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create Event
-                  </Button>
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="feed" className="mt-8">
-              <div className="space-y-6">
-                {filteredPosts.map((post) => (
-                  <Card key={post.id} className="glass glass-hover border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-blue-500/5">
-                    <CardContent className="p-4 sm:p-6">
-                      <div className="flex items-start space-x-3 sm:space-x-4">
-                        <Avatar className="w-10 h-10 sm:w-12 sm:h-12">
-                          <AvatarImage src={post.avatar || "/placeholder.svg"} alt={post.author} />
-                          <AvatarFallback>
-                            {post.author
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-
-                        <div className="flex-1 space-y-3 min-w-0">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                            <div>
-                              <h4 className="font-semibold text-white drop-shadow-[0_0_8px_rgba(147,51,234,0.3)] text-sm sm:text-base">{post.author}</h4>
-                              <p className="text-xs sm:text-sm text-muted-foreground">
-                                {post.community} • {post.timestamp}
-                              </p>
-                            </div>
-                          </div>
-
-                          <p className="text-sm leading-relaxed break-words">{post.content}</p>
-
-                          <div className="flex items-center flex-wrap gap-4 sm:gap-6 pt-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className={`flex items-center space-x-2 h-8 px-2 ${post.isLiked ? "text-red-400" : "text-muted-foreground"}`}
-                            >
-                              <Heart className={`w-4 h-4 ${post.isLiked ? "fill-current" : ""}`} />
-                              <span className="text-xs sm:text-sm">{post.likes}</span>
-                            </Button>
-
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="flex items-center space-x-2 text-muted-foreground h-8 px-2"
-                            >
-                              <MessageCircle className="w-4 h-4" />
-                              <span className="text-xs sm:text-sm">{post.comments}</span>
-                            </Button>
-
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="flex items-center space-x-2 text-muted-foreground h-8 px-2"
-                            >
-                              <Share2 className="w-4 h-4" />
-                              <span className="text-xs sm:text-sm hidden sm:inline">Share</span>
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {filteredPosts.length === 0 && (
-                <div className="text-center py-16">
-                  <MessageCircle className="w-16 h-16 text-muted-foreground mx-auto mb-4 opacity-50" />
-                  <h3 className="text-xl font-semibold mb-2">No posts found</h3>
-                  <p className="text-muted-foreground mb-6">Try adjusting your search terms</p>
-                  <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create Post
-                  </Button>
-                </div>
-              )}
             </TabsContent>
           </Tabs>
         </div>
