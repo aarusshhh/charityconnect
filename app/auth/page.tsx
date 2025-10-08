@@ -26,17 +26,6 @@ export default function AuthPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
 
-  const usersToCSV = (users: User[]): string => {
-    const headers = ['id', 'name', 'email', 'password'].map(h => `"${h}"`).join(',')
-    const rows = users.map(user => [
-      user.id.toString(),
-      `"${user.name.replace(/"/g, '""')}"`,
-      `"${user.email.replace(/"/g, '""')}"`,
-      `"${user.password.replace(/"/g, '""')}"`
-    ].join(','))
-    return [headers, ...rows].join('\n')
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (isSubmitting) return
@@ -74,17 +63,6 @@ export default function AuthPage() {
 
       localStorage.setItem("charityUsers", JSON.stringify([...existingUsers, newUser]))
       localStorage.setItem("currentUser", formData.email)
-
-      const csvContent = usersToCSV([...existingUsers, newUser])
-      const blob = new Blob([csvContent], { type: "text/csv" })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
-      a.download = "charity_users.csv"
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
 
       setFormData({ email: "", password: "", name: "" })
       setIsSubmitting(false)
