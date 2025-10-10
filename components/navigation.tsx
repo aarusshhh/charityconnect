@@ -10,6 +10,7 @@ interface User {
   name: string
   email: string
   password: string
+  userType?: "school" | "ngo" | "admin"
 }
 
 export function Navigation() {
@@ -32,10 +33,9 @@ export function Navigation() {
     const storedCurrentUser = localStorage.getItem("currentUser")
     const storedUsersData = localStorage.getItem("charityUsers")
     const existingUsers: User[] = storedUsersData ? JSON.parse(storedUsersData) : []
-    const currentUserEmail = storedCurrentUser
-    setIsAuth(!!currentUserEmail)
-    if (currentUserEmail) {
-      const currentUser = existingUsers.find(u => u.email === currentUserEmail)
+    setIsAuth(!!storedCurrentUser)
+    if (storedCurrentUser) {
+      const currentUser = existingUsers.find(u => u.email === storedCurrentUser)
       setUser(currentUser || null)
     } else {
       setUser(null)
@@ -52,7 +52,6 @@ export function Navigation() {
     if (isProfileDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside)
     }
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
@@ -68,57 +67,40 @@ export function Navigation() {
             </div>
             <span className="text-xl font-bold">CharityConnect</span>
           </Link>
+
+          {/* Desktop menu */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link 
-              href="/community" 
-              className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors" 
-              onClick={() => setIsOpen(false)}
-            >
+            <Link href="/community" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
               <Users className="w-4 h-4" />
               <span>Communities</span>
             </Link>
-            <Link 
-              href="/opportunities" 
-              className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors" 
-              onClick={() => setIsOpen(false)}
-            >
+            <Link href="/opportunities" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
               <Calendar className="w-4 h-4" />
               <span>Opportunities</span>
             </Link>
-            <Link 
-              href="/location" 
-              className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors" 
-              onClick={() => setIsOpen(false)}
-            >
+            <Link href="/location" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
               <School2 className="w-4 h-4" />
               <span>Schools</span>
             </Link>
           </div>
+
+          {/* Profile / Auth Buttons */}
           <div className="hidden md:flex items-center gap-3 relative">
             {!isAuth ? (
               <>
-                <Button 
-                  variant="outline" 
-                  size="default" 
-                  className="glass-hover" 
-                  onClick={() => router.push("/auth")}
-                >
+                <Button variant="outline" size="default" className="glass-hover" onClick={() => router.push("/auth")}>
                   Sign In
                 </Button>
-                <Button 
-                  size="default" 
-                  className="bg-primary hover:bg-primary/90"
-                  onClick={() => router.push("/auth")}
-                >
+                <Button size="default" className="bg-primary hover:bg-primary/90" onClick={() => router.push("/auth")}>
                   Get Started
                 </Button>
               </>
             ) : (
               <div className="relative">
-                <Button 
-                  variant="outline" 
-                  size="default" 
-                  className="glass-hover flex items-center space-x-2" 
+                <Button
+                  variant="outline"
+                  size="default"
+                  className="glass-hover flex items-center space-x-2"
                   onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
                   aria-expanded={isProfileDropdownOpen}
                   aria-haspopup="true"
@@ -126,8 +108,9 @@ export function Navigation() {
                   <UserCircle className="w-4 h-4" />
                   <span>{user?.name || "Profile"}</span>
                 </Button>
+
                 {isProfileDropdownOpen && (
-                  <div 
+                  <div
                     ref={dropdownRef}
                     className="absolute right-0 top-full mt-2 bg-background border rounded-xl shadow-lg overflow-hidden min-w-56 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
                   >
@@ -135,6 +118,17 @@ export function Navigation() {
                       <p className="text-sm font-medium truncate">{user?.name}</p>
                       <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
                     </div>
+
+                    {/* Admin Page Link */}
+                    {user?.userType === "admin" && (
+                      <div
+                        onClick={() => router.push("/admin")}
+                        className="w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-accent/20 rounded-lg cursor-pointer transition-colors font-medium"
+                      >
+                        <span>Admin Page</span>
+                      </div>
+                    )}
+
                     <div className="p-2">
                       <button
                         onClick={handleSignOut}
@@ -149,76 +143,56 @@ export function Navigation() {
               </div>
             )}
           </div>
+
+          {/* Mobile menu toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 text-foreground hover:bg-accent rounded-lg transition-all duration-200 active:scale-95"
             aria-label="Toggle menu"
           >
             <div className="relative w-6 h-6">
-              <Menu 
-                className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${
-                  isOpen ? "rotate-90 opacity-0 scale-50" : "rotate-0 opacity-100 scale-100"
-                }`} 
-              />
-              <X 
-                className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${
-                  isOpen ? "rotate-0 opacity-100 scale-100" : "-rotate-90 opacity-0 scale-50"
-                }`} 
-              />
+              <Menu className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${isOpen ? "rotate-90 opacity-0 scale-50" : "rotate-0 opacity-100 scale-100"}`} />
+              <X className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${isOpen ? "rotate-0 opacity-100 scale-100" : "-rotate-90 opacity-0 scale-50"}`} />
             </div>
           </button>
         </div>
-        <div 
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
+
+        {/* Mobile menu */}
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
           <div className="pb-4 space-y-1">
-            <Link 
-              href="/community" 
-              className="flex items-center space-x-2 text-muted-foreground hover:text-foreground hover:bg-accent py-3 px-2 rounded-lg transition-all duration-200"
-              onClick={() => setIsOpen(false)}
-            >
+            <Link href="/community" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground hover:bg-accent py-3 px-2 rounded-lg transition-all duration-200">
               <Users className="w-4 h-4" />
               <span>Communities</span>
             </Link>
-            <Link 
-              href="/opportunities" 
-              className="flex items-center space-x-2 text-muted-foreground hover:text-foreground hover:bg-accent py-3 px-2 rounded-lg transition-all duration-200"
-              onClick={() => setIsOpen(false)}
-            >
+            <Link href="/opportunities" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground hover:bg-accent py-3 px-2 rounded-lg transition-all duration-200">
               <Calendar className="w-4 h-4" />
               <span>Opportunities</span>
             </Link>
-            <Link 
-              href="/location" 
-              className="flex items-center space-x-2 text-muted-foreground hover:text-foreground hover:bg-accent py-3 px-2 rounded-lg transition-all duration-200"
-              onClick={() => setIsOpen(false)}
-            >
+            <Link href="/location" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground hover:bg-accent py-3 px-2 rounded-lg transition-all duration-200">
               <School2 className="w-4 h-4" />
               <span>Schools</span>
             </Link>
+
             <div className="flex flex-col gap-2 pt-3">
               {!isAuth ? (
                 <>
-                  <Button 
-                    variant="outline" 
-                    size="default" 
-                    className="w-full glass-hover" 
-                    onClick={() => router.push("/auth")}
-                  >
+                  <Button variant="outline" size="default" className="w-full glass-hover" onClick={() => router.push("/auth")}>
                     Sign In
                   </Button>
-                  <Button 
-                    size="default" 
-                    className="w-full bg-primary hover:bg-primary/90"
-                    onClick={() => router.push("/auth")}
-                  >
+                  <Button size="default" className="w-full bg-primary hover:bg-primary/90" onClick={() => router.push("/auth")}>
                     Get Started
                   </Button>
                 </>
               ) : (
                 <div className="space-y-2">
+                  {user?.userType === "admin" && (
+                    <div
+                      onClick={() => router.push("/admin")}
+                      className="w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-accent/20 rounded-lg cursor-pointer transition-colors font-medium"
+                    >
+                      <span>Admin Page</span>
+                    </div>
+                  )}
                   <div className="p-3 bg-muted/50 rounded-lg border">
                     <p className="text-sm font-medium truncate">{user?.name}</p>
                     <p className="text-xs text-muted-foreground truncate">{user?.email}</p>

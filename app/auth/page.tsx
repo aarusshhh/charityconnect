@@ -3,7 +3,6 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ChevronLeft, UserCircle, UserPlus, Mail, Lock, User } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -13,14 +12,26 @@ interface User {
   name: string
   email: string
   password: string
+  userType: "school" | "ngo" | "admin"
+  schoolName?: string
 }
+
+const schoolOptions = [
+  "Dunes International School",
+  "ADIS",
+  "SEPS",
+  "Repton",
+  "The British International School"
+]
 
 export default function AuthPage() {
   const [mode, setMode] = useState<"signIn" | "signUp">("signIn")
+  const [userType, setUserType] = useState<"school" | "ngo">("school")
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
-    name: ""
+    schoolName: schoolOptions[0] || ""
   })
   const [error, setError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -29,12 +40,11 @@ export default function AuthPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (isSubmitting) return
-
     setIsSubmitting(true)
     setError("")
 
-    if (!formData.email || !formData.password) {
-      setError("Email and password are required!")
+    if (!formData.email || !formData.password || (mode === "signUp" && !formData.name)) {
+      setError("All required fields must be filled!")
       setIsSubmitting(false)
       return
     }
@@ -43,11 +53,6 @@ export default function AuthPage() {
     const existingUsers: User[] = storedUsersData ? JSON.parse(storedUsersData) : []
 
     if (mode === "signUp") {
-      if (!formData.name) {
-        setError("Name is required!")
-        setIsSubmitting(false)
-        return
-      }
       if (existingUsers.some(u => u.email === formData.email)) {
         setError("Email already registered!")
         setIsSubmitting(false)
@@ -58,21 +63,20 @@ export default function AuthPage() {
         id: Date.now(),
         name: formData.name,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        userType,
+        schoolName: userType === "school" ? formData.schoolName : undefined
       }
 
       localStorage.setItem("charityUsers", JSON.stringify([...existingUsers, newUser]))
-      localStorage.setItem("currentUser", formData.email)
-
-      setFormData({ email: "", password: "", name: "" })
+      localStorage.setItem("currentUser", newUser.email)
+      setFormData({ name: "", email: "", password: "", schoolName: schoolOptions[0] || "" })
       setIsSubmitting(false)
       router.push("/")
       return
     }
 
-    const user = existingUsers.find(u => 
-      u.email === formData.email && u.password === formData.password
-    )
+    const user = existingUsers.find(u => u.email === formData.email && u.password === formData.password)
     if (!user) {
       setError("Invalid email or password!")
       setIsSubmitting(false)
@@ -80,60 +84,33 @@ export default function AuthPage() {
     }
 
     localStorage.setItem("currentUser", user.email)
-    setFormData({ email: "", password: "", name: "" })
+    setFormData({ name: "", email: "", password: "", schoolName: schoolOptions[0] || "" })
     setIsSubmitting(false)
     router.push("/")
   }
 
-  useEffect(() => {
-    const card = document.querySelector(".auth-card")
-    if (card) {
-      card.classList.add("opacity-0", "translate-y-4")
-      setTimeout(() => {
-        card.classList.remove("opacity-0", "translate-y-4")
-      }, 50)
-    }
-  }, [mode])
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center p-4">
-      <Card 
-        className={cn(
-          "max-w-md w-full auth-card transition-all duration-500 ease-out border-none shadow-2xl",
-          "bg-background/95 backdrop-blur-xl"
-        )}
-      >
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="absolute top-4 left-4 hover:bg-muted/50 transition-all" 
-          onClick={() => router.push("/")}
-        >
+      <Card className={cn("max-w-md w-full transition-all duration-500 ease-out border-none shadow-2xl", "bg-background/95 backdrop-blur-xl")}>
+        <Button variant="ghost" size="icon" className="absolute top-4 left-4 hover:bg-muted/50 transition-all" onClick={() => router.push("/")}>
           <ChevronLeft className="w-5 h-5" />
         </Button>
 
         <CardHeader className="space-y-4 pb-8 pt-12">
           <div className="mx-auto w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
-            {mode === "signIn" ? (
-              <UserCircle className="w-8 h-8 text-primary" />
-            ) : (
-              <UserPlus className="w-8 h-8 text-primary" />
-            )}
+            {mode === "signIn" ? <UserCircle className="w-8 h-8 text-primary" /> : <UserPlus className="w-8 h-8 text-primary" />}
           </div>
-          <CardTitle className="text-center text-3xl font-bold tracking-tight">
-            {mode === "signIn" ? "Welcome Back" : "Create Account"}
-          </CardTitle>
-          <p className="text-center text-sm text-muted-foreground">
-            {mode === "signIn" 
-              ? "Sign in to continue your journey" 
-              : "Join us to make a difference"}
-          </p>
+          <CardTitle className="text-center text-3xl font-bold tracking-tight">{mode === "signIn" ? "Welcome Back" : "Create Account"}</CardTitle>
+          <p className="text-center text-sm text-muted-foreground">{mode === "signIn" ? "Sign in to continue your journey" : "Join us to make a difference"}</p>
         </CardHeader>
 
         <CardContent className="space-y-6">
-          {error && (
-            <div className="text-destructive text-sm text-center p-3 rounded-xl bg-destructive/10 border border-destructive/20 animate-in fade-in-0 slide-in-from-top-1">
-              {error}
+          {error && <div className="text-destructive text-sm text-center p-3 rounded-xl bg-destructive/10 border border-destructive/20">{error}</div>}
+
+          {mode === "signUp" && (
+            <div className="flex justify-center gap-4 mb-2">
+              <Button size="sm" variant={userType === "school" ? "default" : "outline"} onClick={() => setUserType("school")}>School</Button>
+              <Button size="sm" variant={userType === "ngo" ? "default" : "outline"} onClick={() => setUserType("ngo")}>NGO</Button>
             </div>
           )}
 
@@ -150,6 +127,31 @@ export default function AuthPage() {
                   disabled={isSubmitting}
                 />
               </div>
+            )}
+
+            {/* School Dropdown for school users */}
+            {mode === "signUp" && userType === "school" && (
+              <select
+                className="w-full h-12 bg-muted/50 border-none pl-3 rounded-lg focus-visible:ring-2 focus-visible:ring-primary/20 transition-all"
+                value={formData.schoolName}
+                onChange={(e) => setFormData(prev => ({ ...prev, schoolName: e.target.value }))}
+                disabled={isSubmitting}
+              >
+                {schoolOptions.map((school) => (
+                  <option key={school} value={school}>{school}</option>
+                ))}
+              </select>
+            )}
+
+            {mode === "signUp" && userType === "ngo" && (
+              <Input
+                placeholder="NGO Name"
+                value={formData.schoolName}
+                onChange={(e) => setFormData(prev => ({ ...prev, schoolName: e.target.value }))}
+                required
+                className="w-full h-12 bg-muted/50 border-none pl-3 focus-visible:ring-2 focus-visible:ring-primary/20 transition-all"
+                disabled={isSubmitting}
+              />
             )}
 
             <div className="relative group">
@@ -178,19 +180,8 @@ export default function AuthPage() {
               />
             </div>
 
-            <Button 
-              type="submit" 
-              className="w-full h-12 bg-primary hover:bg-primary/90 font-medium shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all" 
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <span className="flex items-center gap-2">
-                  <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                  Processing...
-                </span>
-              ) : (
-                mode === "signIn" ? "Sign In" : "Create Account"
-              )}
+            <Button type="submit" className="w-full h-12 bg-primary hover:bg-primary/90 font-medium shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all" disabled={isSubmitting}>
+              {isSubmitting ? "Processing..." : mode === "signIn" ? "Sign In" : "Create Account"}
             </Button>
           </form>
 
@@ -199,23 +190,17 @@ export default function AuthPage() {
               <span className="w-full border-t border-muted" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-background px-2 text-muted-foreground">
-                {mode === "signIn" ? "New to CharityConnect?" : "Already have an account?"}
-              </span>
+              <span className="bg-background px-2 text-muted-foreground">{mode === "signIn" ? "New to CharityConnect?" : "Already have an account?"}</span>
             </div>
           </div>
 
-          <Button 
-            type="button"
-            variant="ghost" 
-            className="w-full h-12 font-medium hover:bg-muted/50" 
-            onClick={() => {
-              setMode(prev => prev === "signIn" ? "signUp" : "signIn")
-              setError("")
-              setFormData({ email: "", password: "", name: "" })
-              setIsSubmitting(false)
-            }}
-          >
+          <Button type="button" variant="ghost" className="w-full h-12 font-medium hover:bg-muted/50" onClick={() => {
+            setMode(prev => prev === "signIn" ? "signUp" : "signIn")
+            setUserType("school")
+            setFormData({ name: "", email: "", password: "", schoolName: schoolOptions[0] || "" })
+            setError("")
+            setIsSubmitting(false)
+          }}>
             {mode === "signIn" ? "Create an account" : "Sign in instead"}
           </Button>
         </CardContent>
