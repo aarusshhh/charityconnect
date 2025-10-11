@@ -33,9 +33,10 @@ export function Navigation() {
     const storedCurrentUser = localStorage.getItem("currentUser")
     const storedUsersData = localStorage.getItem("charityUsers")
     const existingUsers: User[] = storedUsersData ? JSON.parse(storedUsersData) : []
-    setIsAuth(!!storedCurrentUser)
-    if (storedCurrentUser) {
-      const currentUser = existingUsers.find(u => u.email === storedCurrentUser)
+    const currentUserEmail = storedCurrentUser
+    setIsAuth(!!currentUserEmail)
+    if (currentUserEmail) {
+      const currentUser = existingUsers.find(u => u.email === currentUserEmail)
       setUser(currentUser || null)
     } else {
       setUser(null)
@@ -52,10 +53,40 @@ export function Navigation() {
     if (isProfileDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside)
     }
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [isProfileDropdownOpen])
+
+  // Determine dashboard link
+  const getDashboardLink = () => {
+    if (!user?.userType) return null
+    switch (user.userType) {
+      case "admin":
+        return "/admin"
+      case "school":
+        return "/school-dashboard"
+      case "ngo":
+        return "/ngo-dashboard"
+      default:
+        return null
+    }
+  }
+
+  const dashboardLabel = () => {
+    if (!user?.userType) return null
+    switch (user.userType) {
+      case "admin":
+        return "Admin Page"
+      case "school":
+        return "School Dashboard"
+      case "ngo":
+        return "NGO Dashboard"
+      default:
+        return null
+    }
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b">
@@ -67,8 +98,6 @@ export function Navigation() {
             </div>
             <span className="text-xl font-bold">CharityConnect</span>
           </Link>
-
-          {/* Desktop menu */}
           <div className="hidden md:flex items-center space-x-6">
             <Link href="/community" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
               <Users className="w-4 h-4" />
@@ -108,7 +137,6 @@ export function Navigation() {
                   <UserCircle className="w-4 h-4" />
                   <span>{user?.name || "Profile"}</span>
                 </Button>
-
                 {isProfileDropdownOpen && (
                   <div
                     ref={dropdownRef}
@@ -119,13 +147,16 @@ export function Navigation() {
                       <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
                     </div>
 
-                    {/* Admin Page Link */}
-                    {user?.userType === "admin" && (
+                    {/* Dashboard Link */}
+                    {getDashboardLink() && (
                       <div
-                        onClick={() => router.push("/admin")}
+                        onClick={() => {
+                          router.push(getDashboardLink()!)
+                          setIsProfileDropdownOpen(false)
+                        }}
                         className="w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-accent/20 rounded-lg cursor-pointer transition-colors font-medium"
                       >
-                        <span>Admin Page</span>
+                        <span>{dashboardLabel()}</span>
                       </div>
                     )}
 
@@ -151,13 +182,17 @@ export function Navigation() {
             aria-label="Toggle menu"
           >
             <div className="relative w-6 h-6">
-              <Menu className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${isOpen ? "rotate-90 opacity-0 scale-50" : "rotate-0 opacity-100 scale-100"}`} />
-              <X className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${isOpen ? "rotate-0 opacity-100 scale-100" : "-rotate-90 opacity-0 scale-50"}`} />
+              <Menu
+                className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${isOpen ? "rotate-90 opacity-0 scale-50" : "rotate-0 opacity-100 scale-100"}`}
+              />
+              <X
+                className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${isOpen ? "rotate-0 opacity-100 scale-100" : "-rotate-90 opacity-0 scale-50"}`}
+              />
             </div>
           </button>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile Menu */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
           <div className="pb-4 space-y-1">
             <Link href="/community" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground hover:bg-accent py-3 px-2 rounded-lg transition-all duration-200">
@@ -176,35 +211,26 @@ export function Navigation() {
             <div className="flex flex-col gap-2 pt-3">
               {!isAuth ? (
                 <>
-                  <Button variant="outline" size="default" className="w-full glass-hover" onClick={() => router.push("/auth")}>
-                    Sign In
-                  </Button>
-                  <Button size="default" className="w-full bg-primary hover:bg-primary/90" onClick={() => router.push("/auth")}>
-                    Get Started
-                  </Button>
+                  <Button variant="outline" size="default" className="w-full glass-hover" onClick={() => router.push("/auth")}>Sign In</Button>
+                  <Button size="default" className="w-full bg-primary hover:bg-primary/90" onClick={() => router.push("/auth")}>Get Started</Button>
                 </>
               ) : (
-                <div className="space-y-2">
-                  {user?.userType === "admin" && (
-                    <div
-                      onClick={() => router.push("/admin")}
-                      className="w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-accent/20 rounded-lg cursor-pointer transition-colors font-medium"
+                <>
+                  {getDashboardLink() && (
+                    <Button
+                      onClick={() => {
+                        router.push(getDashboardLink()!)
+                        setIsOpen(false)
+                      }}
+                      className="w-full bg-accent/10 rounded-xl py-2"
                     >
-                      <span>Admin Page</span>
-                    </div>
+                      {dashboardLabel()}
+                    </Button>
                   )}
-                  <div className="p-3 bg-muted/50 rounded-lg border">
-                    <p className="text-sm font-medium truncate">{user?.name}</p>
-                    <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
-                  </div>
-                  <button
-                    onClick={handleSignOut}
-                    className="w-full flex items-center justify-center space-x-2 px-4 py-2.5 text-sm font-medium text-destructive bg-destructive/10 hover:bg-destructive/20 rounded-lg transition-colors border border-destructive/20"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
+                  <Button onClick={handleSignOut} className="w-full bg-destructive/10 rounded-xl py-2">
+                    Sign Out
+                  </Button>
+                </>
               )}
             </div>
           </div>

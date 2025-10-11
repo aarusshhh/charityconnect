@@ -1,11 +1,13 @@
 "use client"
 import { useState, useEffect } from "react"
+import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 import { ChevronLeft, UserCircle, UserPlus, Mail, Lock, User } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { TEMP_ADMIN } from "@/data/temp-admin"
 
 interface User {
   id: number
@@ -48,6 +50,29 @@ export default function AuthPage() {
       setIsSubmitting(false)
       return
     }
+    if (mode === "signIn" && formData.email === TEMP_ADMIN.email && formData.password === TEMP_ADMIN.password) {
+  // Check if TEMP_ADMIN already exists in localStorage
+  const storedUsersData = localStorage.getItem("charityUsers")
+  const existingUsers: User[] = storedUsersData ? JSON.parse(storedUsersData) : []
+
+  let tempUser = existingUsers.find(u => u.email === TEMP_ADMIN.email)
+  if (!tempUser) {
+    tempUser = {
+      id: Date.now(),
+      name: TEMP_ADMIN.name,
+      email: TEMP_ADMIN.email,
+      password: TEMP_ADMIN.password,
+      userType: "admin",
+    }
+    localStorage.setItem("charityUsers", JSON.stringify([...existingUsers, tempUser]))
+  }
+
+  localStorage.setItem("currentUser", TEMP_ADMIN.email)
+  setFormData({ name: "", email: "", password: "", schoolName: schoolOptions[0] || "" })
+  setIsSubmitting(false)
+  router.push("/")
+  return
+}
 
     const storedUsersData = localStorage.getItem("charityUsers")
     const existingUsers: User[] = storedUsersData ? JSON.parse(storedUsersData) : []
@@ -91,6 +116,7 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex items-center justify-center p-4">
+    <Navigation />
       <Card className={cn("max-w-md w-full transition-all duration-500 ease-out border-none shadow-2xl", "bg-background/95 backdrop-blur-xl")}>
         <Button variant="ghost" size="icon" className="absolute top-4 left-4 hover:bg-muted/50 transition-all" onClick={() => router.push("/")}>
           <ChevronLeft className="w-5 h-5" />
