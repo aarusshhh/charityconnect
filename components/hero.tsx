@@ -151,8 +151,7 @@ export function Hero() {
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto text-pretty leading-relaxed tracking-tight">
-            CharityConnect UAE connects you with local charity organizations across all seven emirates. Discover
-            volunteer opportunities, join community initiatives, and make a real impact in your neighborhood.
+            Danai UAE connects you with local charity organizations across all seven emirates. Discover volunteer opportunities, join community initiatives, and make a real impact in your neighborhood.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">

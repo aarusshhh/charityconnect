@@ -21,16 +21,7 @@ export function CallToAction() {
               track your impact. Your journey to making a difference in the UAE starts here.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg">
-                Start Your Journey
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-              <Button size="lg" variant="outline" className="glass-hover px-8 py-4 text-lg bg-transparent">
-                Browse UAE Communities
-                <Users className="w-5 h-5 ml-2" />
-              </Button>
-            </div>
+        
 
             <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               

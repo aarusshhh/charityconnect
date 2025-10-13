@@ -204,19 +204,19 @@ export function LocationService() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div className="glass rounded-lg p-4">
               <div className="text-2xl font-bold text-primary mb-1">{schools.length}</div>
-              <div className="text-xs text-muted-foreground">Schools Competing</div>
+              <div className="text-xs text-foreground">Schools Competing</div>
             </div>
             <div className="glass rounded-lg p-4">
               <div className="text-2xl font-bold text-primary mb-1">
                 {schools.filter((s) => s.certification && s.certification !== "none").length}
               </div>
-              <div className="text-xs text-muted-foreground">Certified Green Schools</div>
+              <div className="text-xs text-foreground">Certified Green Schools</div>
             </div>
             <div className="glass rounded-lg p-4">
               <div className="text-2xl font-bold text-primary mb-1">
                 {schools.filter((s) => s.score < 60).length}
               </div>
-              <div className="text-xs text-muted-foreground">Needs Improvement</div>
+              <div className="text-xs text-foreground">Needs Improvement</div>
             </div>
           </div>
         </CardContent>
@@ -246,7 +246,7 @@ export function LocationService() {
                       <h4 className="font-semibold text-sm">{school.rank}. {school.name}</h4>
                       {school.rank === 1 && <Trophy className="w-4 h-4 text-yellow-400" />}
                     </div>
-                    <p className="text-xs text-muted-foreground mb-2">
+                    <p className="text-xs mb-2 text-foreground">
                       {school.emissions} tons CO₂ / week
                     </p>
                     <Badge variant="outline" className={`${certificationConfig[school.certification].color} text-xs`}>
@@ -266,71 +266,60 @@ export function LocationService() {
         </CardContent>
       </Card>
 
-      {/* Data Measurement Card */}
       <Card className="glass border-border/50">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Activity className="w-5 h-5 text-primary" />
-            <span>Green Certification Criteria</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground mb-4">
-            Schools are evaluated across four key sustainability metrics and awarded certification based on their overall performance:
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="glass rounded-lg p-3">
-              <div className="flex items-center space-x-2 mb-1">
-                <Recycle className="w-4 h-4 text-green-400" />
-                <span className="text-sm font-semibold">Waste Management</span>
-              </div>
-              <p className="text-xs text-muted-foreground">Recycling rates, waste reduction initiatives</p>
-            </div>
-            <div className="glass rounded-lg p-3">
-              <div className="flex items-center space-x-2 mb-1">
-                <Zap className="w-4 h-4 text-yellow-400" />
-                <span className="text-sm font-semibold">Energy Efficiency</span>
-              </div>
-              <p className="text-xs text-muted-foreground">Renewable energy use, conservation efforts</p>
-            </div>
-            <div className="glass rounded-lg p-3">
-              <div className="flex items-center space-x-2 mb-1">
-                <TrendingUp className="w-4 h-4 text-blue-400" />
-                <span className="text-sm font-semibold">Sustainability Projects</span>
-              </div>
-              <p className="text-xs text-muted-foreground">Student initiatives, green programs</p>
-            </div>
-            <div className="glass rounded-lg p-3">
-              <div className="flex items-center space-x-2 mb-1">
-                <Droplets className="w-4 h-4 text-cyan-400" />
-                <span className="text-sm font-semibold">Water Conservation</span>
-              </div>
-              <p className="text-xs text-muted-foreground">Usage reduction, harvesting systems</p>
-            </div>
-          </div>
-          <div className="mt-4 pt-4 border-t border-border/50">
-            <h4 className="text-sm font-semibold mb-3">Certification Levels:</h4>
-            <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between">
-                <span>🏆 Platinum (90+ points)</span>
-                <span className="text-muted-foreground">Exceptional leadership</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>🥇 Gold (80-89 points)</span>
-                <span className="text-muted-foreground">Outstanding performance</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>🥈 Silver (70-79 points)</span>
-                <span className="text-muted-foreground">Strong commitment</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>🥉 Bronze (60-69 points)</span>
-                <span className="text-muted-foreground">Good practices</span>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+  <CardHeader>
+    <CardTitle className="flex items-center space-x-2">
+      <Activity className="w-5 h-5 text-primary" />
+      <span>Green Certification Criteria</span>
+    </CardTitle>
+  </CardHeader>
+  <CardContent className="space-y-4">
+    <p className="text-sm mb-4 text-slate-300 text-slate-300">
+      Schools are evaluated across four key sustainability metrics and awarded certification based on their overall performance:
+    </p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="glass rounded-lg p-3">
+        <div className="flex items-center space-x-2 mb-1">
+          <Recycle className="w-4 h-4 text-green-400" />
+          <span className="text-sm font-semibold">Waste Management</span>
+        </div>
+        <p className="text-xs text-slate-300">
+          Recycling rates, waste reduction initiatives
+        </p>
+      </div>
+
+      <div className="glass rounded-lg p-3">
+        <div className="flex items-center space-x-2 mb-1">
+          <Zap className="w-4 h-4 text-yellow-400" />
+          <span className="text-sm font-semibold">Energy Efficiency</span>
+        </div>
+        <p className="text-xs text-slate-300">
+          Renewable energy use, conservation efforts
+        </p>
+      </div>
+
+      <div className="glass rounded-lg p-3">
+        <div className="flex items-center space-x-2 mb-1">
+          <TrendingUp className="w-4 h-4 text-blue-400" />
+          <span className="text-sm font-semibold">Sustainability Projects</span>
+        </div>
+        <p className="text-xs text-slate-300">
+          Student initiatives, green programs
+        </p>
+      </div>
+
+      <div className="glass rounded-lg p-3">
+        <div className="flex items-center space-x-2 mb-1">
+          <Droplets className="w-4 h-4 text-cyan-400" />
+          <span className="text-sm font-semibold">Water Conservation</span>
+        </div>
+        <p className="text-xs text-slate-300">
+          Usage reduction, harvesting systems
+        </p>
+      </div>
+    </div>
+  </CardContent>
+</Card>
 
       {/* School Details Modal */}
       {selectedSchool && (

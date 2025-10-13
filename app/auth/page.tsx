@@ -216,7 +216,7 @@ export default function AuthPage() {
               <span className="w-full border-t border-muted" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-background px-2 text-muted-foreground">{mode === "signIn" ? "New to CharityConnect?" : "Already have an account?"}</span>
+              <span className="px-2 bg-transparent text-violet-300">{mode === "signIn" ? "New to danai?" : "Already have an account?"}</span>
             </div>
           </div>
 

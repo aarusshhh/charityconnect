@@ -279,7 +279,7 @@ export function CommunityHub() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-10">
           <h1 className="text-2xl md:text-3xl font-bold mb-2 text-white">
-            Connect with <span className="text-purple-400">UAE</span> communities
+            Connect with <span className="text-fuchsia-200">UAE</span> communities
           </h1>
           <p className="text-gray-300 text-sm md:text-base max-w-xl mx-auto">
             Join charity organizations, discover volunteer opportunities, and share your impact with like-minded individuals.
@@ -351,7 +351,7 @@ export function CommunityHub() {
                       </div>
 
                       <div className="flex gap-2">
-                        <Button className={`flex-1 text-xs py-1 ${c.isJoined ? "bg-gray-700 hover:bg-gray-600" : "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"}`}>
+                        <Button className={`flex-1 text-xs py-1 ${c.isJoined ? "bg-gray-300 hover:bg-gray-500" : "bg-gradient-to-r from-purple-500 to-blue-300 hover:from-purple-700 hover:to-blue-700"}`}>
                           {c.isJoined ? "View" : "Join"}
                         </Button>
                         <Button variant="outline" className="border border-purple-500/30 text-gray-300 py-1">

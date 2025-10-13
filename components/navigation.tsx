@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect, useRef } from "react"
-import { Heart, Users, Calendar, School2, Menu, X, UserCircle, LogOut } from "lucide-react"
+import { FlowerIcon, Users, Calendar, School2, Menu, X, UserCircle, LogOut } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
@@ -94,9 +94,9 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Heart className="w-5 h-5 text-primary-foreground" />
+            <FlowerIcon className="text-background"/>
             </div>
-            <span className="text-xl font-bold">CharityConnect</span>
+            <span className="text-xl font-bold">danai</span>
           </Link>
           <div className="hidden md:flex items-center space-x-6">
             <Link href="/community" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
